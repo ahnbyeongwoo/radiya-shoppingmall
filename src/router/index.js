@@ -6,10 +6,11 @@ import TopPage from '../views/TopPage.vue'
 import BottomsPage from '../views/BottomsPage.vue'
 import ShoesPage from '../views/ShoesPage.vue'
 import BagPage from '../views/BagPage.vue'
+
 const routes = [
   {
     path: '/',
-    name: 'Main',
+    name: 'Home',
     component: MainPage,
   },
   {
@@ -19,19 +20,19 @@ const routes = [
   },
   {
     path: '/signup',
-    name: 'SignUp', 
+    name: 'SignUp',
     component: SignUp,
   },
-  
   { path: '/top', component: TopPage },
   { path: '/bottoms', component: BottomsPage },
   { path: '/shoes', component: ShoesPage },
   { path: '/bag', component: BagPage },
 ];
 
+
 const router = createRouter({
-  history: createWebHistory(process.env.Base_URL),
-  routes,
+  history: createWebHistory(),  // Vue 3에서 사용하는 방식
+  routes
 });
 
 export default router;

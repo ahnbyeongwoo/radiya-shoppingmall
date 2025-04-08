@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'MainComponent',
+  name: 'MainPage',
   methods: {
     goToLogin() {
       this.$router.push('/login'); // 로그인 페이지
