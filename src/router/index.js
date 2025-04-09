@@ -6,6 +6,7 @@ import TopPage from '../views/TopPage.vue'
 import BottomsPage from '../views/BottomsPage.vue'
 import ShoesPage from '../views/ShoesPage.vue'
 import BagPage from '../views/BagPage.vue'
+import AllProducts from '../views/AllProducts.vue';
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
   { path: '/bottoms', component: BottomsPage },
   { path: '/shoes', component: ShoesPage },
   { path: '/bag', component: BagPage },
+  
+  { path: '/products', 
+    name: 'ProductPage', 
+    component: AllProducts 
+  },
 ];
 
 

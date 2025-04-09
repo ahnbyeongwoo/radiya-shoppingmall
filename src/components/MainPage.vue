@@ -6,9 +6,10 @@
         <button @click="onSearchClick">검색</button>
         <button @click="goToLogin">로그인</button>
         <button @click="goToSignup">회원가입</button>
-        <button @click="goToCart">🛒</button><!--장바구니-->
+        <button @click="goToCart">🛒</button>
       </div>
     </header>
+
     <ul class="categories">
       <li><button @click="goToPostList">목록</button></li>
       <li><button @click="goToCategory('/top')">상의</button></li>
@@ -16,32 +17,58 @@
       <li><button @click="goToCategory('/shoes')">신발</button></li>
       <li><button @click="goToCategory('/bag')">가방</button></li>
     </ul>
+
+    <section class="best-products">
+      <h2>🔥 Best 상품</h2>
+      <ProductList :products="bestProducts" />
+      <router-link to="/products" class="view-all">+ 전체 상품 보기</router-link>
+    </section>
   </div>
 </template>
 
 <script>
+import ProductList from '@/components/ProductList.vue'
+
 export default {
-  name: 'MainPage',
+  name: 'MainShoppingmallPage',
+  components: {
+    ProductList
+  },
+  data() {
+    return {
+      allProducts: [
+        { id: 1, name: '화이트 셔츠', price: 32000, image: 'shirt.jpg' },
+        { id: 2, name: '블랙 팬츠', price: 41000, image: 'pants.jpg' },
+        { id: 3, name: '운동화', price: 55000, image: 'shoes.jpg' },
+        { id: 4, name: '청바지', price: 46000, image: 'jeans.jpg' },
+        { id: 5, name: '코트', price: 88000, image: 'coat.jpg' }
+      ]
+    };
+  },
+  computed: {
+    bestProducts() {
+      return this.allProducts.slice(0, 4);
+    }
+  },
   methods: {
     goToLogin() {
-      this.$router.push('/login'); // 로그인 페이지
+      this.$router.push('/login');
     },
     goToSignup() {
-      this.$router.push('/signup'); // 회원가입 페이지
+      this.$router.push('/signup');
     },
     onSearchClick() {
       console.log('검색 버튼 클릭됨!');
     },
     goToPostList() {
-      this.$router.push('/'); // 예시
+      this.$router.push('/');
     },
     goToCategory(path) {
       this.$router.push(path);
     },
     goToCart() {
-      console.log('검색 버튼 클릭됨!');
-    },
-
+      console.log('장바구니 이동!');
+    }
   }
 }
 </script>
@@ -113,5 +140,12 @@ export default {
 
 .categories li button:hover {
   background-color: #f0f0f0;
+}
+.view-all{
+  display: block;
+  text-align: right;
+  margin: 10px 40px 30px 0;
+  color: #4A90E2;
+  text-decoration: none;
 }
 </style>
