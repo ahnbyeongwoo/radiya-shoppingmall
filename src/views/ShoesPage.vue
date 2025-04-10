@@ -26,17 +26,14 @@
 
 <script>
 import ProductList from '@/components/ProductList.vue';
+import AllProducts from '@/data/products.js'
 
 export default {
   name: 'ShoesPage',
   components: { ProductList },
   data() {
     return {
-      shoesProducts: [
-        { id: 1, name: '크록스', price: 19000, image: 'shoes1.jpg' },
-        { id: 2, name: '부츠', price: 49000, image: 'shoes2.jpg' },
-        { id: 3, name: '구두', price: 69000, image: 'shoes3.jpg' },
-      ],
+      shoesProducts: AllProducts.filter(p => p.image.startsWith('3-')),
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
@@ -56,7 +53,7 @@ export default {
       } else if (this.sortOrder === 'high') {
         return [...this.shoesProducts].sort((a, b) => b.price - a.price);
       }
-      return this.shoesProducts; // 인기순/신상품순은 정렬 안함
+      return this.shoesProducts;
     }
   },
   methods: {
@@ -95,7 +92,7 @@ export default {
   padding: 10px 14px;
   cursor: pointer;
   font-size: 14px;
-  width: 180px;
+  width: 130px;
   text-align: left;
 }
 
@@ -108,7 +105,7 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 180px;
+  width: 130px;
   background-color: white;
   border: 1px solid #ccc;
   z-index: 10;

@@ -26,17 +26,14 @@
 
 <script>
 import ProductList from '@/components/ProductList.vue';
+import AllProducts from '@/data/products.js'
 
 export default {
   name: 'BagPage',
   components: { ProductList },
   data() {
     return {
-      bagProducts: [
-        { id: 1, name: '가죽 가방', price: 19000, image: 'bag1.jpg' },
-        { id: 2, name: '캔버스 백팩', price: 26000, image: 'bag2.jpg' },
-        { id: 3, name: '미니 크로스백', price: 15000, image: 'bag3.jpg' }
-      ],
+      bagProducts: AllProducts.filter(p => p.image.startsWith('4-')),
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
@@ -56,7 +53,7 @@ export default {
       } else if (this.sortOrder === 'high') {
         return [...this.bagProducts].sort((a, b) => b.price - a.price);
       }
-      return this.bagProducts; // 인기순/신상품순은 정렬 안함
+      return this.bagProducts; 
     }
   },
   methods: {
@@ -96,7 +93,7 @@ export default {
   padding: 10px 14px;
   cursor: pointer;
   font-size: 14px;
-  width: 180px;
+  width: 130px;
   text-align: left;
 }
 
@@ -104,12 +101,11 @@ export default {
   display: inline-block;
   transform: rotate(180deg);
 }
-
 .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 180px;
+  width: 130px;
   background-color: white;
   border: 1px solid #ccc;
   z-index: 10;

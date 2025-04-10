@@ -26,17 +26,13 @@
 
 <script>
 import ProductList from '@/components/ProductList.vue';
-
+import AllProducts from '@/data/products.js' // 전체 상품 데이터
 export default {
   name: 'TopPage',
   components: { ProductList },
   data() {
     return {
-      topProducts: [
-        { id: 1, name: '반팔 티셔츠', price: 19000, image: 'top1.jpg' },
-        { id: 2, name: '후드티', price: 29000, image: 'top2.jpg' },
-        { id: 3, name: '니트', price: 34000, image: 'top3.jpg' }
-      ],
+      topProducts: AllProducts.filter(p => p.image.startsWith('1-')),
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
@@ -96,7 +92,7 @@ export default {
   padding: 10px 14px;
   cursor: pointer;
   font-size: 14px;
-  width: 180px;
+  width: 130px;
   text-align: left;
 }
 
@@ -109,7 +105,7 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 180px;
+  width: 130px;
   background-color: white;
   border: 1px solid #ccc;
   z-index: 10;

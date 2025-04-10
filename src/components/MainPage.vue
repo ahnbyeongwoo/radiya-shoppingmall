@@ -11,11 +11,10 @@
     </header>
 
     <ul class="categories">
-      <li><button @click="goToPostList">목록</button></li>
-      <li><button @click="goToCategory('/top')">상의</button></li>
-      <li><button @click="goToCategory('/bottoms')">하의</button></li>
-      <li><button @click="goToCategory('/shoes')">신발</button></li>
-      <li><button @click="goToCategory('/bag')">가방</button></li>
+      <li><button @click="goToCategory('/top')">top</button></li>
+      <li><button @click="goToCategory('/bottoms')">pants</button></li>
+      <li><button @click="goToCategory('/shoes')">shoes</button></li>
+      <li><button @click="goToCategory('/bag')">bag</button></li>
     </ul>
 
     <section class="best-products">
@@ -36,12 +35,12 @@ export default {
   },
   data() {
     return {
-      allProducts: [
-        { id: 1, name: '화이트 셔츠', price: 32000, image: 'shirt.jpg' },
-        { id: 2, name: '블랙 팬츠', price: 41000, image: 'pants.jpg' },
-        { id: 3, name: '운동화', price: 55000, image: 'shoes.jpg' },
-        { id: 4, name: '청바지', price: 46000, image: 'jeans.jpg' },
-        { id: 5, name: '코트', price: 88000, image: 'coat.jpg' }
+      allProducts: [//임시 best 상품
+        { id: 1, name: '화이트 셔츠', price: 32000, image: '1-4.jpg' },
+        { id: 2, name: '블랙 팬츠', price: 41000, image: '2-4.jpg' },
+        { id: 3, name: '운동화', price: 55000, image: '3-4.jpg' },
+        { id: 4, name: '청바지', price: 46000, image: '2-5.jpg' },
+        { id: 5, name: '코트', price: 88000, image: '1-5.jpg' }
       ]
     };
   },
@@ -58,16 +57,14 @@ export default {
       this.$router.push('/signup');
     },
     onSearchClick() {
-      console.log('검색 버튼 클릭됨!');
+      console.log('검색 버튼 클릭');
     },
-    goToPostList() {
-      this.$router.push('/');
-    },
+  
     goToCategory(path) {
       this.$router.push(path);
     },
     goToCart() {
-      console.log('장바구니 이동!');
+      console.log('장바구니 이동');
     }
   }
 }
@@ -97,6 +94,8 @@ export default {
   font-weight: bold;
   margin: 0;
   color: #333;
+  position: absolute;
+    left: 45%;
 }
 
 .auth-buttons {
@@ -118,28 +117,24 @@ export default {
   background-color: #f0f0f0;
 }
 
-.categories{
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between; /* 또는 space-around / center 등도 가능 */
-  align-items: center;
-  gap: 20px; /* 버튼 간격 */
+.categories {
+  list-style: none; /* 리스트 마커(● 등)를 제거 */
+  padding: 5px 5px; /* 위아래 안쪽 여백 추가 */
+  padding-left: 20px; /* 왼쪽에 여백을 조금 줘서 너무 붙지 않게 */
+  margin-top: 10px; /* 위쪽 바깥 여백 */
+  display: flex; /* 가로 정렬을 위한 flexbox 사용 */
+  justify-content: flex-start; /* 항목들 사이 동일한 간격으로 분산 정렬 */
+  align-items: center; /* 세로 정렬을 가운데로 맞춤 */
+  gap: 50px; /* 항목 사이 간격 */
+  border-radius: 8px; /* 둥근 모서리 */
 }
 
-.category li button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.categories li button:hover {
-  background-color: #f0f0f0;
+.categories li button {
+  padding: 10px 20px; /* 버튼 안쪽 여백 (상하 10px, 좌우 20px) */
+  font-size: 14px; /* 글자 크기 설정 */
+  background-color: white; /* 버튼 배경을 흰색으로 설정 */
+  border: 1px solid #ccc; /* 테두리 색과 두께 설정 */
+  border-radius: 8px; /* 버튼 모서리를 둥글게 만듦 */
 }
 .view-all{
   display: block;

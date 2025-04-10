@@ -25,25 +25,22 @@
 </template>
 
 <script>
-import ProductList from '@/components/ProductList.vue';
+import ProductList from '@/components/ProductList.vue'
+import AllProducts from '@/data/products.js'
 
 export default {
-  name: 'BottomsPage',
+  name: 'BottomPage',
   components: { ProductList },
   data() {
     return {
-      bottomsProducts: [
-        { id: 1, name: '츄리닝 바지', price: 19000, image: 'bottoms1.jpg' },
-        { id: 2, name: '반바지', price: 29000, image: 'bottoms2.jpg' },
-        { id: 3, name: '트레이닝 바지', price: 34000, image: 'bottoms3.jpg' },
-      ],
+      bottomProducts: AllProducts.filter(p => p.image.startsWith('2-')),
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
         { value: 'high', label: '높은 가격순' },
         { value: 'low', label: '낮은 가격순' }
       ]
-    };
+    }
   },
   computed: {
     selectedSortLabel() {
@@ -52,11 +49,11 @@ export default {
     },
     sortedProducts() {
       if (this.sortOrder === 'low') {
-        return [...this.bottomsProducts].sort((a, b) => a.price - b.price);
+        return [...this.bottomProducts].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
-        return [...this.bottomsProducts].sort((a, b) => b.price - a.price);
+        return [...this.bottomProducts].sort((a, b) => b.price - a.price);
       }
-      return this.bottomsProducts; // 인기순/신상품순은 정렬 안함
+      return this.bottomProducts;
     }
   },
   methods: {
@@ -68,7 +65,6 @@ export default {
       this.showDropdown = false;
     }
   }
-
 }
 </script>
 
@@ -96,7 +92,7 @@ export default {
   padding: 10px 14px;
   cursor: pointer;
   font-size: 14px;
-  width: 180px;
+  width: 130px;
   text-align: left;
 }
 
@@ -109,7 +105,7 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 180px;
+  width: 130px;
   background-color: white;
   border: 1px solid #ccc;
   z-index: 10;
