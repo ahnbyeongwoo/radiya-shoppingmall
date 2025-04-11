@@ -3,10 +3,19 @@
     <header class="main-header">
       <h1 class="shoppingmall-title">RADIYA</h1>
       <div class="auth-buttons">
-        <button @click="onSearchClick">검색</button>
-        <button @click="goToLogin">로그인</button>
-        <button @click="goToSignup">회원가입</button>
-        <button @click="goToCart">🛒</button>
+        
+        <!-- 검색창 영역 -->
+        <div class="search-container">
+          <form @submit.prevent="searchPosts" class="search-container">
+            <input type="text" v-model="searchKeyword" placeholder="검색어를 입력하세요" class="search-input" />
+            <button type="submit" class="common-button">검색</button>
+          </form>
+        </div>
+
+        <!-- 로그인/회원가입/장바구니 버튼 -->
+        <button @click="goToLogin" class="common-button">로그인</button>
+        <button @click="goToSignup" class="common-button">회원가입</button>
+        <button @click="goToCart" class="common-button">장바구니</button>
       </div>
     </header>
 
@@ -27,6 +36,7 @@
 
 <script>
 import ProductList from '@/components/ProductList.vue'
+import axios from 'axios'
 
 export default {
   name: 'MainShoppingmallPage',
@@ -56,8 +66,27 @@ export default {
     goToSignup() {
       this.$router.push('/signup');
     },
-    onSearchClick() {
-      console.log('검색 버튼 클릭');
+    // onSearchClick() {
+    //   console.log('검색 버튼 클릭');
+    // },
+    async searchPosts() {//검색 기능
+      if (!this.searchKeyword.trim()) {
+        alert("검색어를 입력해주세요.");
+        return;
+      }
+      try {
+        const response = await axios.get("http://localhost:3000/api/search", {
+          params: {
+            type: this.searchType,//검색 타입(제목 또는 작성자)
+            keyword: this.searchKeyword.trim(),
+          },
+        });
+        this.posts = response.data; // 검색 결과를 posts에 저장
+        this.currentPage = 1; // 검색 후 첫 페이지로 초기화
+      } catch (error) {
+        console.error("검색 실패:", error.response?.data?.message || error.message);
+        alert("검색 중 오류가 발생했습니다.");
+      }
     },
   
     goToCategory(path) {
@@ -85,9 +114,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;/*세로 방향 정렬, 수직 가운데 정렬 */
-  padding: 20px 40px;
+  padding: 30px 40px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+
 }
 .shoppingmall-title {/* 타이틀 */
   font-size: 2.5em;
@@ -95,28 +124,32 @@ export default {
   margin: 0;
   color: #333;
   position: absolute;
-    left: 45%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .auth-buttons {
-  position: absolute;
-  top: 20px;
-  right: 100px;
   display: flex;
-  gap: 10px;/*버튼 간격 */
+  align-items: center; /* end → center로 변경 */
+  gap: 10px;
+  margin-left: auto;
 }
 
-.auth-buttons button {
-  padding: 6px 2px;/* 상하 6px 좌우 12px*/
+/*로그인, 회원가입, 장바구니 버튼 */
+.common-button {
+  height: 36px;
+  padding: 0 12px;
+  font-size: 14px;
   border: none;
   background-color: #eee;
   border-radius: 5px;
   cursor: pointer;
-}
-.auth-button:hover {
-  background-color: #f0f0f0;
+  box-sizing: border-box;
 }
 
+.common-button:hover {
+  background-color: #f0f0f0;
+}
 .categories {
   list-style: none; /* 리스트 마커(● 등)를 제거 */
   padding: 5px 5px; /* 위아래 안쪽 여백 추가 */
@@ -143,4 +176,21 @@ export default {
   color: #4A90E2;
   text-decoration: none;
 }
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  
+}
+.search-input {
+  height: 36px;
+  padding: 0 10px; /* 좌우만 패딩 */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  vertical-align: middle;
+  margin: 0; /* 여기 margin: 7px 제거!! */
+  box-sizing: border-box;
+}
+
 </style>
