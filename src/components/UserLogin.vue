@@ -3,7 +3,7 @@
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
     <div class="login-container">
       <h2>로그인</h2>
-      <form @submit.prevent="submitForm" id="login-form">
+      <form @submit.prevent="login" id="login-form">
         <div><!--이메일 란-->
           <label for="email">이메일</label>
           <input type="email" id="email" v-model="email" placeholder="이메일을 입력하세요.">
@@ -39,7 +39,7 @@ export default {
     },
     login() {// 로그인 요청
       const loginData = {
-        id: this.email,
+        email: this.email,
         password: this.password,
       };
 

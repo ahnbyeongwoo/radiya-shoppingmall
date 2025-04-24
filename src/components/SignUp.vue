@@ -30,8 +30,8 @@ export default {
   name: 'SignUp',
   data() {
     return {
-      name: '',
       email: '',
+      name: '',
       password: '',
       passwordConfirm: '',
     };
@@ -43,8 +43,8 @@ export default {
         return;
       }
       const userData = {// 서버로 전송할 데이터 준비
+        email: this.email,
         name: this.name,
-        id: this.email, // name 대신 이메일을 아이디로 사용
         password: this.password,
       };
 

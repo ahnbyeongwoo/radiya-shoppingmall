@@ -13,8 +13,10 @@
         </div>
 
         <!-- 로그인/회원가입/장바구니 버튼 -->
-        <button @click="goToLogin" class="common-button">로그인</button>
-        <button @click="goToSignup" class="common-button">회원가입</button>
+        <button v-if="!isLoggedIn" @click="goToLogin" class="common-button">로그인</button>
+        <button v-else @click="logout" class="common-button">로그아웃</button>
+
+        <button v-if="!isLoggedIn" @click="goToSignup" class="common-button">회원가입</button>
         <button @click="goToCart" class="common-button">장바구니</button>
       </div>
     </header>
@@ -51,7 +53,8 @@ export default {
         { id: 3, name: '운동화', price: 55000, image: '3-4.jpg' },
         { id: 4, name: '청바지', price: 46000, image: '2-5.jpg' },
         { id: 5, name: '코트', price: 88000, image: '1-5.jpg' }
-      ]
+      ],
+      isLoggedIn: false,
     };
   },
   computed: {
@@ -62,6 +65,11 @@ export default {
   methods: {
     goToLogin() {
       this.$router.push('/login');
+    },
+    logout() {
+      localStorage.removeItem('currentUser');
+      this.isLoggedIn = false;
+      alert('로그아웃 되었습니다.');
     },
     goToSignup() {
       this.$router.push('/signup');
@@ -95,6 +103,14 @@ export default {
     goToCart() {
       console.log('장바구니 이동');
     }
+  },
+  mounted(){
+    const user= JSON.parse(localStorage.getItem('currentUser'));
+    if(user){
+      // this.userName=user.name;
+      console.log("현재 로그인된 사용자",user);
+    }
+    this.isLoggedIn= !!localStorage.getItem('currentUser');//로그인 상태 확인
   }
 }
 </script>
