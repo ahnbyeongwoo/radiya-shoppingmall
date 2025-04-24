@@ -2,10 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '../components/MainPage.vue';
 import UserLogin from '../components/UserLogin.vue';
 import SignUp from '../components/SignUp.vue'
-import TopPage from '../views/TopPage.vue'
-import BottomsPage from '../views/BottomsPage.vue'
-import ShoesPage from '../views/ShoesPage.vue'
-import BagPage from '../views/BagPage.vue'
+import MenPage from '../views/MenPage.vue'
+import WomenPage from '../views/WomenPage.vue'
+import JeweleryPage from '../views/JeweleryPage.vue'
+import ElectronicsPage from '../views/ElectronicsPage.vue'
 import AllProducts from '../views/AllProducts.vue';
 
 const routes = [
@@ -24,20 +24,20 @@ const routes = [
     name: 'SignUp',
     component: SignUp,
   },
-  { path: '/top', component: TopPage },
-  { path: '/bottoms', component: BottomsPage },
-  { path: '/shoes', component: ShoesPage },
-  { path: '/bag', component: BagPage },
+  { path: '//men', component: MenPage },
+  { path: '/women', component: WomenPage },
+  { path: '/jewelery', component: JeweleryPage },
+  { path: '/electronics', component: ElectronicsPage },
   
   { path: '/products', 
-    name: 'ProductPage', 
+    name: 'AllProducts', 
     component: AllProducts,
   },
   {
     path: '/productdetail',
     name: 'ProductDetail',
     component: () => import('@/components/ProductDetail.vue'),
-  }
+  },
 ];
 
 

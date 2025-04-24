@@ -1,7 +1,7 @@
 <template>
-  <div class="shoes-page">
+  <div class="electronics-page">
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>신발 카테고리 페이지</h2>
+    <h2>전자제품 페이지</h2>
 
     <!-- 드롭다운 정렬 메뉴 -->
     <div class="dropdown" @click="toggleDropdown">
@@ -29,11 +29,11 @@ import ProductList from '@/components/ProductList.vue';
 import AllProducts from '@/data/products.js'
 
 export default {
-  name: 'ShoesPage',
+  name: 'ElectronicsPage',
   components: { ProductList },
   data() {
     return {
-      shoesProducts: AllProducts.filter(p => p.image.startsWith('3-')),
+      electronicsProducts: AllProducts.filter(p => p.image.startsWith('4-')),
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
@@ -49,11 +49,11 @@ export default {
     },
     sortedProducts() {
       if (this.sortOrder === 'low') {
-        return [...this.shoesProducts].sort((a, b) => a.price - b.price);
+        return [...this.electronicsProducts].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
-        return [...this.shoesProducts].sort((a, b) => b.price - a.price);
+        return [...this.electronicsProducts].sort((a, b) => b.price - a.price);
       }
-      return this.shoesProducts;
+      return this.electronicsProducts; 
     }
   },
   methods: {
@@ -76,7 +76,8 @@ export default {
   text-decoration: none;
   margin-bottom: 20px;
 }
-.shoes-page {
+
+.electronics-page {
   padding: 20px;
 }
 /* 드롭다운 스타일 */
@@ -100,7 +101,6 @@ export default {
   display: inline-block;
   transform: rotate(180deg);
 }
-
 .dropdown-menu {
   position: absolute;
   top: 100%;

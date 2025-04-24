@@ -1,29 +1,34 @@
-<template><!--/products 라우터용 컴포넌트, 전체 상품-->
-<!--전체 상품 페이지, 실제 상품 데이터(배열)를 가지고 ProductList에 넘기는 페이지 컴포넌트--->
-  <div>
+<template><!--전체 상품 목록 페이지-->
+  <div class="all-products">
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>전체 상품</h2>
-    <ProductList :products="allProducts" />
+    <h2>전체 상품 목록</h2>
+    <div class="product-grid">
+      <div v-for="product in products" :key="product.id" class="product-card">
+        <img :src="product.image" :alt="product.name" class="product-image" />
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.price.toLocaleString() }}원</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import ProductList from '@/components/ProductList.vue';
-import AllProducts from '@/data/products.js'
+import axios from 'axios';
+
 export default {
   name: 'AllProducts',
-  components: { ProductList },
   data() {
     return {
-      allProducts: AllProducts,
-      // allProducts: [
-      //   { id: 1, name: '화이트 셔츠', price: 32000, image: 'shirt.jpg' },
-      //   { id: 2, name: '블랙 팬츠', price: 41000, image: 'pants.jpg' },
-      //   { id: 3, name: '운동화', price: 55000, image: 'shoes.jpg' },
-      //   { id: 4, name: '청바지', price: 46000, image: 'jeans.jpg' },
-      //   { id: 5, name: '코트', price: 88000, image: 'coat.jpg' }
-      // ]
+      products: []
     };
+  },
+  async mounted() {
+    try {
+      const response = await axios.get('http://localhost:3000/products');
+      this.products = response.data;
+    } catch (error) {
+      console.error('전체 상품 조회 실패:', error);
+    }
   }
 }
 </script>
@@ -35,7 +40,25 @@ export default {
   color: #4A90E2;
   text-decoration: none;
   margin-bottom: 20px;
-  position: absolute;
-  left: 45%;
+}
+.all-products {
+  padding: 40px;
+}
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.product-card {
+  width: 200px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
 }
 </style>

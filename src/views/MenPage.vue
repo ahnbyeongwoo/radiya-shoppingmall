@@ -1,7 +1,7 @@
 <template>
-  <div class="top-page">
+  <div class="men-page">
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>상의 카테고리 페이지</h2>
+    <h2>남성 의류 카테고리 페이지</h2>
 
     <!-- 드롭다운 정렬 메뉴 -->
     <div class="dropdown" @click="toggleDropdown">
@@ -28,11 +28,11 @@
 import ProductList from '@/components/ProductList.vue';
 import AllProducts from '@/data/products.js' // 전체 상품 데이터
 export default {
-  name: 'TopPage',
+  name: 'MenPage',
   components: { ProductList },
   data() {
     return {
-      topProducts: AllProducts.filter(p => p.image.startsWith('1-')),
+      menProducts: AllProducts.filter(p => p.image.startsWith('1-')),
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
@@ -48,11 +48,11 @@ export default {
     },
     sortedProducts() {
       if (this.sortOrder === 'low') {
-        return [...this.topProducts].sort((a, b) => a.price - b.price);
+        return [...this.menProducts].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
-        return [...this.topProducts].sort((a, b) => b.price - a.price);
+        return [...this.menProducts].sort((a, b) => b.price - a.price);
       }
-      return this.topProducts; // 인기순/신상품순은 정렬 안함
+      return this.menProducts; // 인기순/신상품순은 정렬 안함
     }
   },
   methods: {
@@ -75,7 +75,7 @@ export default {
   text-decoration: none;
   margin-bottom: 20px;
 }
-.top-page {
+.men-page {
   padding: 20px;
 }
 

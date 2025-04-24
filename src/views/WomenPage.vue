@@ -1,7 +1,7 @@
 <template>
-  <div class="bag-page">
+  <div class="women-page">
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>가방 카테고리 페이지</h2>
+    <h2>여성 의류 페이지</h2>
 
     <!-- 드롭다운 정렬 메뉴 -->
     <div class="dropdown" @click="toggleDropdown">
@@ -25,22 +25,22 @@
 </template>
 
 <script>
-import ProductList from '@/components/ProductList.vue';
+import ProductList from '@/components/ProductList.vue'
 import AllProducts from '@/data/products.js'
 
 export default {
-  name: 'BagPage',
+  name: 'WomenPage',
   components: { ProductList },
   data() {
     return {
-      bagProducts: AllProducts.filter(p => p.image.startsWith('4-')),
+      womenProducts: AllProducts.filter(p => p.image.startsWith('2-')),
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
         { value: 'high', label: '높은 가격순' },
         { value: 'low', label: '낮은 가격순' }
       ]
-    };
+    }
   },
   computed: {
     selectedSortLabel() {
@@ -49,11 +49,11 @@ export default {
     },
     sortedProducts() {
       if (this.sortOrder === 'low') {
-        return [...this.bagProducts].sort((a, b) => a.price - b.price);
+        return [...this.womenProducts].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
-        return [...this.bagProducts].sort((a, b) => b.price - a.price);
+        return [...this.womenProducts].sort((a, b) => b.price - a.price);
       }
-      return this.bagProducts; 
+      return this.womenProducts;
     }
   },
   methods: {
@@ -76,8 +76,7 @@ export default {
   text-decoration: none;
   margin-bottom: 20px;
 }
-
-.bag-page {
+.women-page {
   padding: 20px;
 }
 /* 드롭다운 스타일 */
@@ -101,6 +100,7 @@ export default {
   display: inline-block;
   transform: rotate(180deg);
 }
+
 .dropdown-menu {
   position: absolute;
   top: 100%;

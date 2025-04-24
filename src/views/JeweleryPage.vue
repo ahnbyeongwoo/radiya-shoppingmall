@@ -1,7 +1,7 @@
 <template>
-  <div class="bottoms-page">
+  <div class="jewelery-page">
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>하의 카테고리 페이지</h2>
+    <h2>쥬얼리 페이지</h2>
 
     <!-- 드롭다운 정렬 메뉴 -->
     <div class="dropdown" @click="toggleDropdown">
@@ -25,22 +25,22 @@
 </template>
 
 <script>
-import ProductList from '@/components/ProductList.vue'
+import ProductList from '@/components/ProductList.vue';
 import AllProducts from '@/data/products.js'
 
 export default {
-  name: 'BottomPage',
+  name: 'JeweleryPage',
   components: { ProductList },
   data() {
     return {
-      bottomProducts: AllProducts.filter(p => p.image.startsWith('2-')),
+      jeweleryProducts: AllProducts.filter(p => p.image.startsWith('3-')),
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
         { value: 'high', label: '높은 가격순' },
         { value: 'low', label: '낮은 가격순' }
       ]
-    }
+    };
   },
   computed: {
     selectedSortLabel() {
@@ -49,11 +49,11 @@ export default {
     },
     sortedProducts() {
       if (this.sortOrder === 'low') {
-        return [...this.bottomProducts].sort((a, b) => a.price - b.price);
+        return [...this.jeweleryProducts].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
-        return [...this.bottomProducts].sort((a, b) => b.price - a.price);
+        return [...this.jeweleryProducts].sort((a, b) => b.price - a.price);
       }
-      return this.bottomProducts;
+      return this.jeweleryProducts;
     }
   },
   methods: {
@@ -76,7 +76,7 @@ export default {
   text-decoration: none;
   margin-bottom: 20px;
 }
-.bottoms-page {
+.jewelery-page {
   padding: 20px;
 }
 /* 드롭다운 스타일 */

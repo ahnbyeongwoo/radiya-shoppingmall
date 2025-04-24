@@ -3,29 +3,25 @@
     <header class="main-header">
       <h1 class="shoppingmall-title">RADIYA</h1>
       <div class="auth-buttons">
-        
-        <!-- 검색창 영역 -->
-        <div class="search-container">
-          <form @submit.prevent="searchPosts" class="search-container">
-            <input type="text" v-model="searchKeyword" placeholder="검색어를 입력하세요" class="search-input" />
-            <button type="submit" class="common-button">검색</button>
-          </form>
-        </div>
-
-        <!-- 로그인/회원가입/장바구니 버튼 -->
+        <!--검색창 영역-->
+        <form @submit.prevent="searchPosts" class="search-container">
+          <input type="text" v-model="searchKeyword" placeholder="검색어를 입력하세요" class="search-input" />
+          <button type="submit" class="common-button">검색</button>
+        </form>
+        <!--검색, 로그인, 장바구니 영역-->
         <button v-if="!isLoggedIn" @click="goToLogin" class="common-button">로그인</button>
         <button v-else @click="logout" class="common-button">로그아웃</button>
-
         <button v-if="!isLoggedIn" @click="goToSignup" class="common-button">회원가입</button>
         <button @click="goToCart" class="common-button">장바구니</button>
       </div>
     </header>
 
+
     <ul class="categories">
-      <li><button @click="goToCategory('/top')">top</button></li>
-      <li><button @click="goToCategory('/bottoms')">pants</button></li>
-      <li><button @click="goToCategory('/shoes')">shoes</button></li>
-      <li><button @click="goToCategory('/bag')">bag</button></li>
+      <li><button @click="goToCategory('/men')">Men</button></li>
+      <li><button @click="goToCategory('/women')">Women</button></li>
+      <li><button @click="goToCategory('/jewelery')">Jewelery</button></li>
+      <li><button @click="goToCategory('/electronics')">Electronics</button></li>
     </ul>
 
     <section class="best-products">
@@ -117,41 +113,53 @@ export default {
 
 <style scoped>
 .main-container {/* 전체 컨테이너 */
-  padding-top: 100px; /* header 고정 공간 확보 */
+  /* padding-top: 0px;  */
+  /* header 고정 공간 확보 */
   background-color: #ffffff;
 }
-
-.main-header {/* 상단 고정 헤더 */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #f9f9f9;
+.main-header {
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  align-items: center;/*세로 방향 정렬, 수직 가운데 정렬 */
-  padding: 30px 40px;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+  z-index: 10;
 }
-.shoppingmall-title {/* 타이틀 */
-  font-size: 2.5em;
-  font-weight: bold;
-  margin: 0;
-  color: #333;
+
+.shoppingmall-title {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  font-size: 2.2em;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
 }
 
 .auth-buttons {
   display: flex;
-  align-items: center; /* end → center로 변경 */
+  align-items: center;
   gap: 10px;
-  margin-left: auto;
+  margin-left: auto;        /* 🔥 오른쪽으로 정렬 */
+  min-width: 360px;
+  white-space: nowrap;
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-/*로그인, 회원가입, 장바구니 버튼 */
+.search-input {
+  height: 36px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
 .common-button {
   height: 36px;
   padding: 0 12px;
@@ -166,25 +174,30 @@ export default {
 .common-button:hover {
   background-color: #f0f0f0;
 }
+
 .categories {
-  list-style: none; /* 리스트 마커(● 등)를 제거 */
-  padding: 5px 5px; /* 위아래 안쪽 여백 추가 */
-  padding-left: 20px; /* 왼쪽에 여백을 조금 줘서 너무 붙지 않게 */
-  margin-top: 10px; /* 위쪽 바깥 여백 */
-  display: flex; /* 가로 정렬을 위한 flexbox 사용 */
-  justify-content: flex-start; /* 항목들 사이 동일한 간격으로 분산 정렬 */
-  align-items: center; /* 세로 정렬을 가운데로 맞춤 */
-  gap: 50px; /* 항목 사이 간격 */
-  border-radius: 8px; /* 둥근 모서리 */
+  list-style: none;
+  padding: 5px 20px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  /* background-color: #f0f0f0; */
+  border-radius: 8px;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .categories li button {
-  padding: 10px 20px; /* 버튼 안쪽 여백 (상하 10px, 좌우 20px) */
-  font-size: 14px; /* 글자 크기 설정 */
-  background-color: white; /* 버튼 배경을 흰색으로 설정 */
-  border: 1px solid #ccc; /* 테두리 색과 두께 설정 */
-  border-radius: 8px; /* 버튼 모서리를 둥글게 만듦 */
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
 }
+
 .view-all{
   display: block;
   text-align: right;
