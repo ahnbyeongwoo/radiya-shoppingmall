@@ -1,127 +1,65 @@
 <template>
   <div class="men-page">
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>남성 의류 카테고리 페이지</h2>
-
-    <!-- 드롭다운 정렬 메뉴 -->
-    <div class="dropdown" @click="toggleDropdown">
-      <button class="dropdown-toggle">
-        {{ selectedSortLabel }} <span :class="{ rotate: showDropdown }">▴</span>
-      </button>
-      <ul v-if="showDropdown" class="dropdown-menu">
-        <li
-          v-for="option in sortOptions"
-          :key="option.value"
-          :class="{ active: sortOrder === option.value }"
-          @click.stop="sortBy(option.value)"
-        >
-          {{ option.label }}
-        </li>
-      </ul>
-    </div>
-
-    <ProductList :products="sortedProducts" />
+    <h2>남성 의류</h2>
+    <div v-if="products.length === 0">상품이 없습니다.</div>
+    <ul>
+  <li v-for="product in products" :key="product.id">
+    <img :src="product.image" :alt="product.name" width="100" />
+    <p>{{ product.name }}</p>
+    <p>{{ product.price }}원</p>
+  </li>
+</ul>
   </div>
 </template>
 
 <script>
-import ProductList from '@/components/ProductList.vue';
-import AllProducts from '@/data/products.js' // 전체 상품 데이터
+import axios from 'axios';
+
 export default {
   name: 'MenPage',
-  components: { ProductList },
   data() {
     return {
-      menProducts: AllProducts.filter(p => p.image.startsWith('1-')),
-      sortOrder: 'high',
-      showDropdown: false,
-      sortOptions: [
-        { value: 'high', label: '높은 가격순' },
-        { value: 'low', label: '낮은 가격순' }
-      ]
+      products: []
     };
   },
-  computed: {
-    selectedSortLabel() {
-      const found = this.sortOptions.find(opt => opt.value === this.sortOrder);
-      return found ? found.label : '정렬';
-    },
-    sortedProducts() {
-      if (this.sortOrder === 'low') {
-        return [...this.menProducts].sort((a, b) => a.price - b.price);
-      } else if (this.sortOrder === 'high') {
-        return [...this.menProducts].sort((a, b) => b.price - a.price);
-      }
-      return this.menProducts; // 인기순/신상품순은 정렬 안함
+  async mounted() {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/products/category/${encodeURIComponent('men clothing')}`
+      );
+      this.products = response.data;
+    } catch (error) {
+      console.error('남성 의류 상품 조회 실패:', error);
     }
   },
-  methods: {
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
-    },
-    sortBy(order) {
-      this.sortOrder = order;
-      this.showDropdown = false;
-    }
-  }
+
+
 }
 </script>
 
 <style scoped>
-.shoppingmall-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #4A90E2;
-  text-decoration: none;
-  margin-bottom: 20px;
-}
 .men-page {
-  padding: 20px;
+  padding: 40px;
 }
 
-/* 드롭다운 스타일 */
-.dropdown {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 20px;
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
-.dropdown-toggle {
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px 14px;
-  cursor: pointer;
-  font-size: 14px;
-  width: 130px;
-  text-align: left;
+.product-card {
+  width: 200px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
 }
 
-.dropdown-toggle .rotate {
-  display: inline-block;
-  transform: rotate(180deg);
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 130px;
-  background-color: white;
-  border: 1px solid #ccc;
-  z-index: 10;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.dropdown-menu li {
-  padding: 10px 14px;
-  cursor: pointer;
-}
-
-.dropdown-menu li:hover,
-.dropdown-menu li.active {
-  background-color: black;
-  color: white;
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
 }
 </style>
