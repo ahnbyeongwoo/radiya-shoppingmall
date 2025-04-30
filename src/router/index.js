@@ -7,7 +7,7 @@ import WomenPage from '../views/WomenPage.vue'
 import JeweleryPage from '../views/JeweleryPage.vue'
 import ElectronicsPage from '../views/ElectronicsPage.vue'
 import AllProducts from '../views/AllProducts.vue';
-
+import CartPage from '../components/CartPage.vue';
 const routes = [
   {
     path: '/',
@@ -37,6 +37,11 @@ const routes = [
     path: '/productdetail',
     name: 'ProductDetail',
     component: () => import('@/components/ProductDetail.vue'),
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: CartPage,
   },
 ];
 

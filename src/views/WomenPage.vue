@@ -1,7 +1,8 @@
 <template>
   <div class="women-page">
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>여성 의류 페이지</h2>
+    <h2>여성 의류</h2>
+    <div v-if="products.length === 0">상품이 없습니다.</div>
 
     <!-- 드롭다운 정렬 메뉴 -->
     <div class="dropdown" @click="toggleDropdown">
@@ -20,27 +21,29 @@
       </ul>
     </div>
 
+    <!-- 정렬된 상품 출력 -->
     <ProductList :products="sortedProducts" />
   </div>
 </template>
 
 <script>
-import ProductList from '@/components/ProductList.vue'
-import AllProducts from '@/data/products.js'
+import axios from 'axios';
+import ProductList from '@/components/ProductList.vue';
 
 export default {
   name: 'WomenPage',
   components: { ProductList },
   data() {
     return {
-      womenProducts: AllProducts.filter(p => p.image.startsWith('2-')),
+      products: [],
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
+        { value: 'random', label: '랜덤순'},
         { value: 'high', label: '높은 가격순' },
-        { value: 'low', label: '낮은 가격순' }
+        { value: 'low', label: '낮은 가격순' },
       ]
-    }
+    };
   },
   computed: {
     selectedSortLabel() {
@@ -49,11 +52,13 @@ export default {
     },
     sortedProducts() {
       if (this.sortOrder === 'low') {
-        return [...this.womenProducts].sort((a, b) => a.price - b.price);
+        return [...this.products].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
-        return [...this.womenProducts].sort((a, b) => b.price - a.price);
+        return [...this.products].sort((a, b) => b.price - a.price);
+      } else if (this.sortOrder === 'random'){
+        return [...this.products].sort(() => Math.random() -0.5);
       }
-      return this.womenProducts;
+      return this.products;
     }
   },
   methods: {
@@ -64,11 +69,24 @@ export default {
       this.sortOrder = order;
       this.showDropdown = false;
     }
+  },
+  async mounted() {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/products/category/${encodeURIComponent('women clothing')}`
+      );
+      this.products = response.data;
+    } catch (error) {
+      console.error('여성 의류 상품 조회 실패:', error);
+    }
   }
 }
 </script>
 
 <style scoped>
+.women-page {
+  padding: 20px;
+}
 .shoppingmall-title {
   font-size: 32px;
   font-weight: bold;
@@ -76,9 +94,7 @@ export default {
   text-decoration: none;
   margin-bottom: 20px;
 }
-.women-page {
-  padding: 20px;
-}
+
 /* 드롭다운 스타일 */
 .dropdown {
   position: relative;

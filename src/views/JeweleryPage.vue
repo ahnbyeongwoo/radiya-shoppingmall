@@ -1,8 +1,8 @@
 <template>
   <div class="jewelery-page">
     <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>쥬얼리 페이지</h2>
-
+    <h2>쥬얼리</h2>
+    <div v-if="products.length === 0">상품이 없습니다.</div>
     <!-- 드롭다운 정렬 메뉴 -->
     <div class="dropdown" @click="toggleDropdown">
       <button class="dropdown-toggle">
@@ -20,25 +20,27 @@
       </ul>
     </div>
 
+    <!-- 정렬된 상품 출력 -->
     <ProductList :products="sortedProducts" />
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import ProductList from '@/components/ProductList.vue';
-import AllProducts from '@/data/products.js'
 
 export default {
   name: 'JeweleryPage',
   components: { ProductList },
   data() {
     return {
-      jeweleryProducts: AllProducts.filter(p => p.image.startsWith('3-')),
+      products: [],
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
+        { value: 'random', label: '랜덤순'},
         { value: 'high', label: '높은 가격순' },
-        { value: 'low', label: '낮은 가격순' }
+        { value: 'low', label: '낮은 가격순' },
       ]
     };
   },
@@ -49,11 +51,13 @@ export default {
     },
     sortedProducts() {
       if (this.sortOrder === 'low') {
-        return [...this.jeweleryProducts].sort((a, b) => a.price - b.price);
+        return [...this.products].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
-        return [...this.jeweleryProducts].sort((a, b) => b.price - a.price);
+        return [...this.products].sort((a, b) => b.price - a.price);
+      } else if (this.sortOrder === 'random'){
+        return [...this.products].sort(() => Math.random() -0.5);
       }
-      return this.jeweleryProducts;
+      return this.products;
     }
   },
   methods: {
@@ -64,11 +68,24 @@ export default {
       this.sortOrder = order;
       this.showDropdown = false;
     }
+  },
+  async mounted() {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/products/category/${encodeURIComponent('jewelery')}`
+      );
+      this.products = response.data;
+    } catch (error) {
+      console.error('쥬얼리 상품 조회 실패:', error);
+    }
   }
 }
 </script>
 
 <style scoped>
+.jewelery-page {
+  padding: 20px;
+}
 .shoppingmall-title {
   font-size: 32px;
   font-weight: bold;
@@ -76,9 +93,7 @@ export default {
   text-decoration: none;
   margin-bottom: 20px;
 }
-.jewelery-page {
-  padding: 20px;
-}
+
 /* 드롭다운 스타일 */
 .dropdown {
   position: relative;

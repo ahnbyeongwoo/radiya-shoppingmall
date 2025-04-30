@@ -26,15 +26,15 @@
 
     <section class="best-products">
       <h2>🔥 Best 상품</h2>
-      <ProductList :products="bestProducts" />
+      <ProductList :products="sortedProducts" />
       <router-link to="/products" class="view-all">+ 전체 상품 보기</router-link>
     </section>
   </div>
 </template>
 
 <script>
-import ProductList from '@/components/ProductList.vue'
 import axios from 'axios'
+import ProductList from '@/components/ProductList.vue'
 
 export default {
   name: 'MainShoppingmallPage',
@@ -43,19 +43,14 @@ export default {
   },
   data() {
     return {
-      allProducts: [//임시 best 상품
-        { id: 1, name: '화이트 셔츠', price: 32000, image: '1-4.jpg' },
-        { id: 2, name: '블랙 팬츠', price: 41000, image: '2-4.jpg' },
-        { id: 3, name: '운동화', price: 55000, image: '3-4.jpg' },
-        { id: 4, name: '청바지', price: 46000, image: '2-5.jpg' },
-        { id: 5, name: '코트', price: 88000, image: '1-5.jpg' }
-      ],
+      products: [],
       isLoggedIn: false,
+      searchKeyword: '',
     };
   },
   computed: {
-    bestProducts() {
-      return this.allProducts.slice(0, 4);
+    sortedProducts() {
+      return this.products;
     }
   },
   methods: {
@@ -70,53 +65,62 @@ export default {
     goToSignup() {
       this.$router.push('/signup');
     },
-    // onSearchClick() {
-    //   console.log('검색 버튼 클릭');
-    // },
-    async searchPosts() {//검색 기능
+    async searchPosts() {
       if (!this.searchKeyword.trim()) {
         alert("검색어를 입력해주세요.");
         return;
       }
       try {
-        const response = await axios.get("http://localhost:3000/api/search", {
+        const response = await axios.get("http://localhost:3000/products/search", {
           params: {
-            type: this.searchType,//검색 타입(제목 또는 작성자)
-            keyword: this.searchKeyword.trim(),
+            query: this.searchKeyword.trim()
           },
         });
-        this.posts = response.data; // 검색 결과를 posts에 저장
+        this.products = response.data;
         this.currentPage = 1; // 검색 후 첫 페이지로 초기화
       } catch (error) {
         console.error("검색 실패:", error.response?.data?.message || error.message);
         alert("검색 중 오류가 발생했습니다.");
       }
     },
-  
+
+
     goToCategory(path) {
       this.$router.push(path);
     },
     goToCart() {
-      console.log('장바구니 이동');
-    }
+      this.$router.push('/cart');
+    },
+    getRandomProducts(products, count) {
+      const shuffled = [...products].sort(() => 0.5 - Math.random()); // 배열 섞기
+      return shuffled.slice(0, count); // 앞에서 10개 추출
+    },
   },
-  mounted(){
-    const user= JSON.parse(localStorage.getItem('currentUser'));
-    if(user){
-      // this.userName=user.name;
-      console.log("현재 로그인된 사용자",user);
+  async mounted() {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (user) {
+      console.log("현재 로그인된 사용자", user);
     }
-    this.isLoggedIn= !!localStorage.getItem('currentUser');//로그인 상태 확인
+    this.isLoggedIn = !!user;//로그인 상태 확인용
+
+    try {
+      const response = await axios.get(`http://localhost:3000/products`);
+      this.products = this.getRandomProducts(response.data, 20);
+    } catch (error) {
+      console.error('전체 상품 조회 실패:', error);
+    }
   }
 }
 </script>
 
 <style scoped>
-.main-container {/* 전체 컨테이너 */
+.main-container {
+  /* 전체 컨테이너 */
   /* padding-top: 0px;  */
   /* header 고정 공간 확보 */
   background-color: #ffffff;
 }
+
 .main-header {
   position: relative;
   display: flex;
@@ -141,10 +145,12 @@ export default {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-left: auto;        /* 🔥 오른쪽으로 정렬 */
+  margin-left: auto;
+  /* 🔥 오른쪽으로 정렬 */
   min-width: 360px;
   white-space: nowrap;
 }
+
 .search-container {
   display: flex;
   align-items: center;
@@ -198,28 +204,31 @@ export default {
   cursor: pointer;
 }
 
-.view-all{
+.view-all {
   display: block;
   text-align: right;
   margin: 10px 40px 30px 0;
   color: #4A90E2;
   text-decoration: none;
 }
+
 .search-container {
   display: flex;
   align-items: center;
   gap: 5px;
-  
+
 }
+
 .search-input {
   height: 36px;
-  padding: 0 10px; /* 좌우만 패딩 */
+  padding: 0 10px;
+  /* 좌우만 패딩 */
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 5px;
   vertical-align: middle;
-  margin: 0; /* 여기 margin: 7px 제거!! */
+  margin: 0;
+  /* 여기 margin: 7px 제거!! */
   box-sizing: border-box;
 }
-
 </style>
