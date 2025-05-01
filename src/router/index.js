@@ -8,6 +8,8 @@ import JeweleryPage from '../views/JeweleryPage.vue'
 import ElectronicsPage from '../views/ElectronicsPage.vue'
 import AllProducts from '../views/AllProducts.vue';
 import CartPage from '../components/CartPage.vue';
+import LikePage from '../components/LikePage.vue';
+
 const routes = [
   {
     path: '/',
@@ -43,6 +45,11 @@ const routes = [
     name: 'Cart',
     component: CartPage,
   },
+  {
+    path: '/like',
+    name: 'Like',
+    component: LikePage,
+  }
 ];
 
 

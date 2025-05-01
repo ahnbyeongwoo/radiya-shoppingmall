@@ -14,6 +14,7 @@
     <div v-if="cartItems.length > 0" class='totalPrice'>
       <p><strong>수량: {{ count }} 개</strong></p>
       <p><strong>총 금액: {{ totalPrice }} $</strong></p>
+      <button @click="payment">결제</button>
     </div>
   </div>
 </template>

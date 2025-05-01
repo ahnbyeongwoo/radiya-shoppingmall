@@ -13,6 +13,7 @@
         <button v-else @click="logout" class="common-button">로그아웃</button>
         <button v-if="!isLoggedIn" @click="goToSignup" class="common-button">회원가입</button>
         <button @click="goToCart" class="common-button">장바구니</button>
+        <button @click="goToLike" class="common-button">좋아요</button>
       </div>
     </header>
 
@@ -90,6 +91,9 @@ export default {
     },
     goToCart() {
       this.$router.push('/cart');
+    },
+    goToLike(){
+      this.$router.push('/like');
     },
     getRandomProducts(products, count) {
       const shuffled = [...products].sort(() => 0.5 - Math.random()); // 배열 섞기

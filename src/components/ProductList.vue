@@ -8,11 +8,14 @@
       <p class="product-name">{{ product.name }}</p>
       <p class="product-price">{{ product.price }}$</p>
       <button @click="addToCart(product)">장바구니 추가</button>
+      <button @click="toggleLike(product)">❤️ 좋아요</button>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'ProductList',
   props: {
@@ -22,13 +25,30 @@ export default {
     }
   },
   methods: {
-    addToCart(product) {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      cart.push(product);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert('장바구니에 추가되었습니다!');
-    }
+  addToCart(product) {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('장바구니에 추가되었습니다!');
+  },
+  //////////////////////////////////////////////////////////////////////
+  async toggleLike(product) {
+  const user = JSON.parse(localStorage.getItem('currentUser'));
+  if (!user || !user.email) return;
+  try {
+    const response = await axios.post('http://localhost:3000/likes', {
+      product_id: product.id,
+      user_email: user.email,
+    });
+
+    const liked = response.data.liked;
+    alert(liked ? '좋아요 추가됨' : '좋아요 취소됨');
+  } catch (err) {
+    console.error('좋아요 요청 실패:', err);
   }
+}
+
+}
 }
 </script>
 
@@ -60,8 +80,9 @@ export default {
 }
 
 .product-price {
-  color: #4A90E2;
+  /* color: #4A90E2; */
   margin-top: 6px;
+  font-size: 1.5em;
 }
 </style>
 
