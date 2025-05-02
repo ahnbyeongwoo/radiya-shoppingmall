@@ -3,12 +3,13 @@
     <header class="main-header">
       <h1 class="shoppingmall-title">RADIYA</h1>
       <div class="auth-buttons">
-        <!--검색창 영역-->
+        <!-- 검색창 영역 -->
         <form @submit.prevent="searchPosts" class="search-container">
           <input type="text" v-model="searchKeyword" placeholder="검색어를 입력하세요" class="search-input" />
           <button type="submit" class="common-button">검색</button>
         </form>
-        <!--검색, 로그인, 장바구니 영역-->
+
+        <!-- 로그인, 장바구니, 좋아요 버튼 -->
         <button v-if="!isLoggedIn" @click="goToLogin" class="common-button">로그인</button>
         <button v-else @click="logout" class="common-button">로그아웃</button>
         <button v-if="!isLoggedIn" @click="goToSignup" class="common-button">회원가입</button>
@@ -17,12 +18,11 @@
       </div>
     </header>
 
-
     <ul class="categories">
-      <li><button @click="goToCategory('/men')">Men</button></li>
-      <li><button @click="goToCategory('/women')">Women</button></li>
-      <li><button @click="goToCategory('/jewelery')">Jewelery</button></li>
-      <li><button @click="goToCategory('/electronics')">Electronics</button></li>
+      <li><button @click="goToCategory('/men')">남성 의류</button></li>
+      <li><button @click="goToCategory('/women')">여성 의류</button></li>
+      <li><button @click="goToCategory('/jewelery')">쥬얼리</button></li>
+      <li><button @click="goToCategory('/electronics')">전자 제품</button></li>
     </ul>
 
     <section class="best-products">
@@ -39,9 +39,7 @@ import ProductList from '@/components/ProductList.vue'
 
 export default {
   name: 'MainShoppingmallPage',
-  components: {
-    ProductList
-  },
+  components: { ProductList },
   data() {
     return {
       products: [],
@@ -66,6 +64,15 @@ export default {
     goToSignup() {
       this.$router.push('/signup');
     },
+    goToCategory(path) {
+      this.$router.push(path);
+    },
+    goToCart() {
+      this.$router.push('/cart');
+    },
+    goToLike() {
+      this.$router.push('/like');
+    },
     async searchPosts() {
       if (!this.searchKeyword.trim()) {
         alert("검색어를 입력해주세요.");
@@ -73,45 +80,53 @@ export default {
       }
       try {
         const response = await axios.get("http://localhost:3000/products/search", {
-          params: {
-            query: this.searchKeyword.trim()
-          },
+          params: { query: this.searchKeyword.trim() },
         });
-        this.products = response.data;
-        this.currentPage = 1; // 검색 후 첫 페이지로 초기화
+        this.products = response.data.map(p => ({
+          ...p,
+          liked: false,
+          likesCount: 0
+        }));
       } catch (error) {
         console.error("검색 실패:", error.response?.data?.message || error.message);
         alert("검색 중 오류가 발생했습니다.");
       }
     },
-
-
-    goToCategory(path) {
-      this.$router.push(path);
-    },
-    goToCart() {
-      this.$router.push('/cart');
-    },
-    goToLike(){
-      this.$router.push('/like');
-    },
     getRandomProducts(products, count) {
-      const shuffled = [...products].sort(() => 0.5 - Math.random()); // 배열 섞기
-      return shuffled.slice(0, count); // 앞에서 10개 추출
-    },
+      const shuffled = [...products].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count);
+    }
   },
   async mounted() {
     const user = JSON.parse(localStorage.getItem('currentUser'));
-    if (user) {
-      console.log("현재 로그인된 사용자", user);
-    }
-    this.isLoggedIn = !!user;//로그인 상태 확인용
+    this.isLoggedIn = !!user;
 
     try {
-      const response = await axios.get(`http://localhost:3000/products`);
-      this.products = this.getRandomProducts(response.data, 20);
+      const productRes = await axios.get(`http://localhost:3000/products`);
+      let allProducts = this.getRandomProducts(productRes.data, 20);
+
+      if (user) {
+        const likeRes = await axios.get(`http://localhost:3000/likes/${user.email}`);
+        const likedProductIds = likeRes.data.map(item => item.product_id);
+
+        // 각 상품에 liked와 likesCount 초기화
+        allProducts = allProducts.map(p => ({
+          ...p,
+          liked: likedProductIds.includes(p.id),
+          likesCount: p.likesCount || 0
+        }));
+      } else {
+        // 로그인 안 한 경우 좋아요 기본 false
+        allProducts = allProducts.map(p => ({
+          ...p,
+          liked: false,
+          likesCount: p.likesCount || 0
+        }));
+      }
+
+      this.products = allProducts;
     } catch (error) {
-      console.error('전체 상품 조회 실패:', error);
+      console.error('상품 또는 좋아요 조회 실패:', error);
     }
   }
 }
@@ -150,11 +165,16 @@ export default {
   align-items: center;
   gap: 10px;
   margin-left: auto;
-  /* 🔥 오른쪽으로 정렬 */
-  min-width: 360px;
-  white-space: nowrap;
+  padding: 6px 12px;
+  background-color: #f1f1f1;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
+.auth-buttons:hover {
+  background-color: #eaeaea;
+}
 .search-container {
   display: flex;
   align-items: center;
@@ -172,17 +192,20 @@ export default {
 
 .common-button {
   height: 36px;
-  padding: 0 12px;
+  padding: 0 14px;
   font-size: 14px;
+  font-weight: bold;
   border: none;
-  background-color: #eee;
-  border-radius: 5px;
+  background-color: #ffffff;
+  border-radius: 8px;
   cursor: pointer;
-  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .common-button:hover {
-  background-color: #f0f0f0;
+  background-color: #4A90E2;
+  color: white;
 }
 
 .categories {

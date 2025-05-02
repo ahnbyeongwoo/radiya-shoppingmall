@@ -3,15 +3,17 @@ const { defineConfig } = require('@vue/cli-service')
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  proxy:{
-    '/api': {
-      target: 'http://localhost:3000',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/api': ''
+  devServer:{
+    proxy:{
+      '/api':{
+        target:'http://localhost:3000',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/api':''
+        }
       }
+    }
   }
-}
 })
 
 // const webpack = require('webpack');
