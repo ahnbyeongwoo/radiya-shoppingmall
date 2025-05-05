@@ -72,12 +72,48 @@ export default {
   },
   async mounted() {
     try {
+      // 1. 상품 불러오기
       const response = await axios.get(
         `http://localhost:3000/products/category/${encodeURIComponent('electronics')}`
       );
-      this.products = response.data;
+      const productList = response.data;
+
+      // 2. 로그인된 사용자 정보 확인
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+      // 3. 로그인된 경우 → 좋아요 상태 정보 불러오기
+      if (currentUser && currentUser.email) {
+        const likeRes = await axios.get(
+          `http://localhost:3000/like?user_email=${currentUser.email}`
+        );
+
+        if (Array.isArray(likeRes.data)) {
+          const likedProductIds = likeRes.data.map((item) => item.product_id);
+          productList.forEach((product) => {
+            product.liked = likedProductIds.includes(product.id);
+          });
+        }
+      }
+
+      // 4. 모든 상품의 좋아요 수 불러오기
+      const countPromises = productList.map((product) =>
+        axios.get(`http://localhost:3000/likes/${product.id}`)
+      );
+      const likeCounts = await Promise.allSettled(countPromises);
+
+      likeCounts.forEach((res, idx) => {
+        if (res.status === "fulfilled") {
+          productList[idx].likesCount = res.value.data.likesCount || 0;
+        } else {
+          productList[idx].likesCount = 0;
+        }
+      });
+
+      // 5. 반영된 상품 목록 저장
+      this.products = productList;
+
     } catch (error) {
-      console.error('전자제품 상품 조회 실패:', error);
+      console.error('전자제품 조회 실패:', error);
     }
   }
 }

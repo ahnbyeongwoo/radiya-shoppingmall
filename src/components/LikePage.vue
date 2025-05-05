@@ -6,6 +6,7 @@
     <ul v-else>
       <li v-for="product in likedProducts" :key="product.id">
     <img :src="product.image" alt="product.name" width="100" />
+    <!-- <img :src="product.image" :alt="product.name" class="product-image" /> -->
     <p>{{ product.name }}</p>
     <p>{{ product.price }}$</p>
   </li>

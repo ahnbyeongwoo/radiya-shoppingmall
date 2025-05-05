@@ -10,12 +10,8 @@
         {{ selectedSortLabel }} <span :class="{ rotate: showDropdown }">▴</span>
       </button>
       <ul v-if="showDropdown" class="dropdown-menu">
-        <li
-          v-for="option in sortOptions"
-          :key="option.value"
-          :class="{ active: sortOrder === option.value }"
-          @click.stop="sortBy(option.value)"
-        >
+        <li v-for="option in sortOptions" :key="option.value" :class="{ active: sortOrder === option.value }"
+          @click.stop="sortBy(option.value)">
           {{ option.label }}
         </li>
       </ul>
@@ -41,7 +37,7 @@ export default {
       sortOrder: 'high',
       showDropdown: false,
       sortOptions: [
-        { value: 'random', label: '랜덤순'},
+        { value: 'random', label: '랜덤순' },
         { value: 'high', label: '높은 가격순' },
         { value: 'low', label: '낮은 가격순' },
       ]
@@ -57,8 +53,8 @@ export default {
         return [...this.products].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
         return [...this.products].sort((a, b) => b.price - a.price);
-      } else if (this.sortOrder === 'random'){
-        return [...this.products].sort(() => Math.random() -0.5);
+      } else if (this.sortOrder === 'random') {
+        return [...this.products].sort(() => Math.random() - 0.5);
       }
       return this.products;
     }
@@ -74,15 +70,50 @@ export default {
   },
   async mounted() {
     try {
+      // 1. 상품 불러오기
       const response = await axios.get(
         `http://localhost:3000/products/category/${encodeURIComponent('men clothing')}`
-      );//DB 서버에서 남성 의류 상품 조회함
-      this.products = response.data;
+      );
+      const productList = response.data;
+
+      // 2. 로그인된 사용자 정보 확인
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+      // 3. 로그인된 경우 → 좋아요 상태 정보 불러오기
+      if (currentUser && currentUser.email) {
+        const likeRes = await axios.get(
+          `http://localhost:3000/like?user_email=${currentUser.email}`
+        );
+
+        if (Array.isArray(likeRes.data)) {
+          const likedProductIds = likeRes.data.map((item) => item.product_id);
+          productList.forEach((product) => {
+            product.liked = likedProductIds.includes(product.id);
+          });
+        }
+      }
+
+      // 4. 모든 상품의 좋아요 수 불러오기
+      const countPromises = productList.map((product) =>
+        axios.get(`http://localhost:3000/likes/${product.id}`)
+      );
+      const likeCounts = await Promise.allSettled(countPromises);
+
+      likeCounts.forEach((res, idx) => {
+        if (res.status === "fulfilled") {
+          productList[idx].likesCount = res.value.data.likesCount || 0;
+        } else {
+          productList[idx].likesCount = 0;
+        }
+      });
+
+      // 5. 반영된 상품 목록 저장
+      this.products = productList;
+
     } catch (error) {
       console.error('남성 의류 상품 조회 실패:', error);
     }
-  },
-
+  }
 
 }
 </script>
@@ -91,6 +122,7 @@ export default {
 .men-page {
   padding: 40px;
 }
+
 .shoppingmall-title {
   font-size: 32px;
   font-weight: bold;
@@ -144,5 +176,4 @@ export default {
   background-color: black;
   color: white;
 }
-
 </style>

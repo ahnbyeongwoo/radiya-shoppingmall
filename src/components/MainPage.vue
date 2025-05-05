@@ -27,7 +27,7 @@
 
     <section class="best-products">
       <h2>🔥 Best 상품</h2>
-      <ProductList :products="sortedProducts" />
+      <ProductList :products="products" />
       <router-link to="/products" class="view-all">+ 전체 상품 보기</router-link>
     </section>
   </div>
@@ -36,6 +36,7 @@
 <script>
 import axios from 'axios'
 import ProductList from '@/components/ProductList.vue'
+
 
 export default {
   name: 'MainShoppingmallPage',
@@ -47,10 +48,9 @@ export default {
       searchKeyword: '',
     };
   },
+
   computed: {
-    sortedProducts() {
-      return this.products;
-    }
+
   },
   methods: {
     goToLogin() {
@@ -98,45 +98,56 @@ export default {
     }
   },
   async mounted() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    this.isLoggedIn = !!user;
-
     try {
-      const productRes = await axios.get(`http://localhost:3000/products`);
-      let allProducts = this.getRandomProducts(productRes.data, 20);
+      // 전체 상품 불러오기
+      const productRes = await axios.get('http://localhost:3000/products');
+      const productList = productRes.data;
 
-      if (user) {
-        const likeRes = await axios.get(`http://localhost:3000/likes/${user.email}`);
-        const likedProductIds = likeRes.data.map(item => item.product_id);
+      // 로그인한 사용자 정보 가져오기
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-        // 각 상품에 liked와 likesCount 초기화
-        allProducts = allProducts.map(p => ({
-          ...p,
-          liked: likedProductIds.includes(p.id),
-          likesCount: p.likesCount || 0
-        }));
-      } else {
-        // 로그인 안 한 경우 좋아요 기본 false
-        allProducts = allProducts.map(p => ({
-          ...p,
-          liked: false,
-          likesCount: p.likesCount || 0
-        }));
+      // 로그인한 경우 -> 좋아요 정보 요청
+      if (currentUser && currentUser.email) {
+        const likeRes = await axios.get(
+          `http://localhost:3000/like?user_email=${currentUser.email}`
+        );
+
+        //배열인지 확인하고 map 실행
+        if (Array.isArray(likeRes.data)) {
+          const likedProductIds = likeRes.data.map((item) => item.product_id);
+          productList.forEach((product) => {
+            product.liked = likedProductIds.includes(product.id);
+          });
+        } else {
+          console.error("likeRes.data is not an array:", likeRes.data);
+        }
       }
 
-      this.products = allProducts;
-    } catch (error) {
-      console.error('상품 또는 좋아요 조회 실패:', error);
+      // 전체 좋아요 수 가져오기 (로그인 여부 관계없이)
+      const countPromises = productList.map((product) =>
+        axios.get(`http://localhost:3000/likes/${product.id}`)
+      );
+
+      const likeCounts = await Promise.allSettled(countPromises);
+      likeCounts.forEach((res, idx) => {
+        if (res.status === "fulfilled") {
+          productList[idx].likesCount = res.value.data.likesCount || 0;
+        } else {
+          productList[idx].likesCount = 0; // 실패한 경우 기본값
+        }
+      });
+
+      this.products = this.getRandomProducts(productList, 10); // 랜덤으로 10개 상품만 표시
+    } catch (err) {
+      console.error('상품 또는 좋아요 조회 실패:', err);
     }
+
   }
 }
 </script>
 
 <style scoped>
 .main-container {
-  /* 전체 컨테이너 */
-  /* padding-top: 0px;  */
-  /* header 고정 공간 확보 */
   background-color: #ffffff;
 }
 
@@ -175,6 +186,7 @@ export default {
 .auth-buttons:hover {
   background-color: #eaeaea;
 }
+
 .search-container {
   display: flex;
   align-items: center;
@@ -199,7 +211,7 @@ export default {
   background-color: #ffffff;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, color 0.3s;
 }
 
