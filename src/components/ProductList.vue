@@ -8,8 +8,8 @@
       <p class="product-name">{{ product.name }}</p>
       <p class="product-price">{{ product.price }}$</p>
 
+      <button @click.stop="goToDetail(product.id)" class="detail-button">🔍</button>
       <button @click="addToCart(product)">장바구니 추가</button>
-
       <!-- 좋아요 버튼 -->
       <button @click="toggleLike(product)" class="like-button">
         <span :class="{ liked: product.liked }">
@@ -17,6 +17,8 @@
         </span>
         {{ product.likesCount || 0 }}
       </button>
+
+      
     </div>
   </div>
 </template>
@@ -44,7 +46,9 @@ export default {
       localStorage.setItem('cart', JSON.stringify(cart));
       alert('장바구니에 추가되었습니다!');
     },
-
+    goToDetail(productId){
+      this.$router.push(`/product/${productId}`);
+    },
     async toggleLike(product) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user || !user.email) return;
@@ -160,4 +164,12 @@ export default {
 .like-button span.liked {
   color: red;
 }
+.detail-button {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
 </style>

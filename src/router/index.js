@@ -9,6 +9,7 @@ import ElectronicsPage from '../views/ElectronicsPage.vue'
 import AllProducts from '../views/AllProducts.vue';
 import CartPage from '../components/CartPage.vue';
 import LikePage from '../components/LikePage.vue';
+import ProductDetail from '../components/ProductDetail.vue';
 
 const routes = [
   {
@@ -36,9 +37,11 @@ const routes = [
     component: AllProducts,
   },
   {
-    path: '/productdetail',
+    path: '/product/:id',
     name: 'ProductDetail',
-    component: () => import('@/components/ProductDetail.vue'),
+    // component: () => import('@/components/ProductDetail.vue'),
+    component: ProductDetail,
+    props: true,
   },
   {
     path: '/cart',

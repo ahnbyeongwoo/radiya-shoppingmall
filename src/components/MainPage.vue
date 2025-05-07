@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       products: [],
-      isLoggedIn: false,
+      isLoggedIn: true,
       searchKeyword: '',
     };
   },
@@ -55,6 +55,7 @@ export default {
   methods: {
     goToLogin() {
       this.$router.push('/login');
+      
     },
     logout() {
       localStorage.removeItem('currentUser');
