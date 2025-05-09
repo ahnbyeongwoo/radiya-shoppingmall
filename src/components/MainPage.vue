@@ -1,34 +1,38 @@
 <template>
   <div class="main-container">
-    <header class="main-header">
-      <h1 class="shoppingmall-title">RADIYA</h1>
-      <div class="auth-buttons">
-        <!-- 검색창 영역 -->
-        <form @submit.prevent="searchPosts" class="search-container">
-          <input type="text" v-model="searchKeyword" placeholder="검색어를 입력하세요" class="search-input" />
-          <button type="submit" class="common-button">검색</button>
-        </form>
+    <header class="d-flex justify-content-between align-items-center bg-light px-4 py-3 shadow-sm">
+      <h1 class="m-0 text-center flex-grow-1">RADIYA</h1>
 
-        <!-- 로그인, 장바구니, 좋아요 버튼 -->
-        <button v-if="!isLoggedIn" @click="goToLogin" class="common-button">로그인</button>
-        <button v-else @click="logout" class="common-button">로그아웃</button>
-        <button v-if="!isLoggedIn" @click="goToSignup" class="common-button">회원가입</button>
-        <button @click="goToCart" class="common-button">장바구니</button>
-        <button @click="goToLike" class="common-button">좋아요</button>
+      <form @submit.prevent="searchPosts" class="d-flex align-items-center gap-2 me-4" role="search">
+        <input v-model="searchKeyword" type="text" class="form-control" placeholder="검색어 입력" />
+        <button type="submit" class="btn btn-outline-primary">검색</button>
+      </form>
+
+
+      <div class="d-flex gap-2">
+        <button v-if="!isLoggedIn" class="btn btn-outline-primary me-2" @click="goToLogin">로그인</button>
+        <button v-else class="btn btn-outline-secondary" @click="logout">로그아웃</button>
+        <button v-if="!isLoggedIn" class="btn btn-outline-secondary" @click="goToSignup">회원가입</button>
+        <button class="btn btn-outline-dark position-relative" @click="goToCart">🛒</button>
+        <button class="btn btn-outline-danger btn-sm" @click="goToLike">좋아요</button>
       </div>
     </header>
 
-    <ul class="categories">
-      <li><button @click="goToCategory('/men')">남성 의류</button></li>
-      <li><button @click="goToCategory('/women')">여성 의류</button></li>
-      <li><button @click="goToCategory('/jewelery')">쥬얼리</button></li>
-      <li><button @click="goToCategory('/electronics')">전자 제품</button></li>
+
+    <ul class="nav justify-content-center my-4 flex-wrap gap-2">
+      <li><button class="btn btn-outline-primary" @click="goToCategory('/men')">남성 의류</button></li>
+      <li><button class="btn btn-outline-primary" @click="goToCategory('/women')">여성 의류</button></li>
+      <li><button class="btn btn-outline-primary" @click="goToCategory('/jewelery')">쥬얼리</button></li>
+      <li><button class="btn btn-outline-primary" @click="goToCategory('/electronics')">전자 제품</button></li>
     </ul>
+
 
     <section class="best-products">
       <h2>🔥 Best 상품</h2>
       <ProductList :products="products" />
-      <router-link to="/products" class="view-all">+ 전체 상품 보기</router-link>
+      <router-link to="/products" class="d-block text-end me-4 mt-3 text-decoration-none text-primary fw-bold">
+        + 전체 상품 보기
+      </router-link>
     </section>
   </div>
 </template>
@@ -36,7 +40,7 @@
 <script>
 import axios from 'axios'
 import ProductList from '@/components/ProductList.vue'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default {
   name: 'MainShoppingmallPage',
@@ -55,7 +59,7 @@ export default {
   methods: {
     goToLogin() {
       this.$router.push('/login');
-      
+
     },
     logout() {
       localStorage.removeItem('currentUser');
@@ -75,6 +79,7 @@ export default {
       this.$router.push('/like');
     },
     async searchPosts() {
+      console.log("검색어:", this.searchKeyword);
       if (!this.searchKeyword.trim()) {
         alert("검색어를 입력해주세요.");
         return;
@@ -150,125 +155,5 @@ export default {
 <style scoped>
 .main-container {
   background-color: #ffffff;
-}
-
-.main-header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 20px 40px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-.shoppingmall-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 2.2em;
-  font-weight: bold;
-  color: #333;
-  margin: 0;
-}
-
-.auth-buttons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: auto;
-  padding: 6px 12px;
-  background-color: #f1f1f1;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.auth-buttons:hover {
-  background-color: #eaeaea;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.search-input {
-  height: 36px;
-  padding: 0 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.common-button {
-  height: 36px;
-  padding: 0 14px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  background-color: #ffffff;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.common-button:hover {
-  background-color: #4A90E2;
-  color: white;
-}
-
-.categories {
-  list-style: none;
-  padding: 5px 20px;
-  margin-top: 10px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
-  /* background-color: #f0f0f0; */
-  border-radius: 8px;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.categories li button {
-  padding: 10px 20px;
-  font-size: 14px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.view-all {
-  display: block;
-  text-align: right;
-  margin: 10px 40px 30px 0;
-  color: #4A90E2;
-  text-decoration: none;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-
-}
-
-.search-input {
-  height: 36px;
-  padding: 0 10px;
-  /* 좌우만 패딩 */
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  vertical-align: middle;
-  margin: 0;
-  /* 여기 margin: 7px 제거!! */
-  box-sizing: border-box;
 }
 </style>

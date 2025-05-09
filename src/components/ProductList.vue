@@ -2,25 +2,25 @@
 <!--전체 상품 보기 전용 페이지, 목록만 담당하는 컴포넌트 역할-->
 <!--views폴더의 상품 조회 리스트들은 ProductList.vue로 전달-->
 <template>
-  <div class="product-grid">
-    <div class="product-card" v-for="product in localProducts" :key="product.id">
-      <img :src="product.image" :alt="product.name" class="product-image" />
-      <p class="product-name">{{ product.name }}</p>
-      <p class="product-price">{{ product.price }}$</p>
-
-      <button @click.stop="goToDetail(product.id)" class="detail-button">🔍</button>
-      <button @click="addToCart(product)">장바구니 추가</button>
-      <!-- 좋아요 버튼 -->
-      <button @click="toggleLike(product)" class="like-button">
-        <span :class="{ liked: product.liked }">
-          {{ product.liked ? '❤️' : '🤍' }}
-        </span>
-        {{ product.likesCount || 0 }}
-      </button>
-
-      
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <div class="col" v-for="product in localProducts" :key="product.id">
+      <div class="card h-100 shadow-sm">
+        <img :src="product.image" class="card-img-top" :alt="product.name" style="height: 250px; object-fit: contain;">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="text-primary fw-bold">{{ formatPrice(product.price).toLocaleString() }}원</p>
+          <div class="d-flex justify-content-center gap-2">
+            <button class="btn btn-sm btn-outline-secondary" @click.stop="goToDetail(product.id)">🔍</button>
+            <button class="btn btn-sm btn-outline-success" @click.stop="addToCart(product)">장바구니</button>
+            <button class="btn btn-sm btn-outline-danger" @click.stop="toggleLike(product)">
+              {{ product.liked ? '❤️' : '🤍' }} {{ product.likesCount || 0 }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -40,13 +40,17 @@ export default {
     };
   },
   methods: {
+    formatPrice(dollar) {
+      const won = dollar * 1300;
+      return `₩${won.toLocaleString()}`;
+    },
     addToCart(product) {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       cart.push(product);
       localStorage.setItem('cart', JSON.stringify(cart));
       alert('장바구니에 추가되었습니다!');
     },
-    goToDetail(productId){
+    goToDetail(productId) {
       this.$router.push(`/product/${productId}`);
     },
     async toggleLike(product) {
@@ -111,13 +115,13 @@ export default {
 
   },
   watch: {
-  products: {
-    immediate: true,
-    handler(newProducts) {
-      this.localProducts = newProducts.map(p => ({ ...p }));
+    products: {
+      immediate: true,
+      handler(newProducts) {
+        this.localProducts = newProducts.map(p => ({ ...p }));
+      }
     }
   }
-}
 
 };
 </script>
@@ -143,6 +147,7 @@ export default {
   height: auto;
   border-radius: 4px;
 }
+
 .product-name {
   font-weight: bold;
   margin-top: 10px;
@@ -164,6 +169,7 @@ export default {
 .like-button span.liked {
   color: red;
 }
+
 .detail-button {
   margin-top: 8px;
   background: none;
@@ -171,5 +177,4 @@ export default {
   cursor: pointer;
   font-size: 1.2em;
 }
-
 </style>

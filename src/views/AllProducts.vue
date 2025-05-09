@@ -6,7 +6,7 @@
       <div v-for="product in products" :key="product.id" class="product-card">
         <img :src="product.image" :alt="product.name" class="product-image" />
         <h3>{{ product.name }}</h3>
-        <p>{{ product.price.toLocaleString() }}$</p>
+        <p>{{ formatPrice(product.price) }}원</p>
         <!-- 좋아요 버튼 -->
       <button @click="toggleLike(product)" class="like-button">
         <span :class="{ liked: product.liked }">
@@ -30,6 +30,10 @@ export default {
     };
   },
   methods:{
+    formatPrice(dollar) {
+      const won = dollar * 1300;
+    return `₩${won.toLocaleString()}`;
+    },
     async toggleLike(product) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user || !user.email) { return; }

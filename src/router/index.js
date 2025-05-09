@@ -10,6 +10,7 @@ import AllProducts from '../views/AllProducts.vue';
 import CartPage from '../components/CartPage.vue';
 import LikePage from '../components/LikePage.vue';
 import ProductDetail from '../components/ProductDetail.vue';
+import PaymentPage from '../components/PaymentPage.vue';
 
 const routes = [
   {
@@ -52,6 +53,11 @@ const routes = [
     path: '/like',
     name: 'Like',
     component: LikePage,
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: PaymentPage,
   }
 ];
 
