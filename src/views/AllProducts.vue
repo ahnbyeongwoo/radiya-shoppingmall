@@ -1,19 +1,33 @@
-<template><!--전체 상품 목록 페이지-->
-  <div class="all-products">
-    <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>전체 상품 목록</h2>
-    <div class="product-grid">
-      <div v-for="product in products" :key="product.id" class="product-card">
-        <img :src="product.image" :alt="product.name" class="product-image" />
-        <h3>{{ product.name }}</h3>
-        <p>{{ formatPrice(product.price) }}원</p>
-        <!-- 좋아요 버튼 -->
-      <button @click="toggleLike(product)" class="like-button">
-        <span :class="{ liked: product.liked }">
-          {{ product.liked ? '❤️' : '🤍' }}
-        </span>
-        {{ product.likesCount || 0 }} <!--좋아요 카운트-->
-      </button>
+<template>
+  <div class="container">
+    <router-link to="/" class="btn btn-link text-decoration-none fs-3 fw-bold text-primary">RADIYA</router-link>
+    <h2 class="my-4">전체 상품 목록</h2>
+
+    <div v-if="products.length === 0" class="text-muted">상품이 없습니다.</div>
+    <!--검색어-->
+    <form @submit.prevent="searchPosts" class="d-flex align-items-center gap-2 me-4" role="search">
+        <input v-model="searchKeyword" type="text" class="mt-2 form-control" placeholder="검색어 입력" />
+        <button type="submit" class="mb-3 btn btn-outline-primary px-3 py-1" style="white-space: nowrap;">검색</button>
+      </form>
+
+    <div class="row g-4">
+      <div class="col-6 col-md-4 col-lg-3" v-for="(product, index) in products" :key="index">
+        <div class="card h-100 shadow-sm">
+          <img :src="product.image" class="card-img-top p-3" :alt="product.name" style="height: 200px; object-fit: contain;">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <h6 class="card-title">{{ product.name }}</h6>
+            <p class="text-primary fw-bold">{{ formatPrice(product.price).toLocaleString() }}원</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <button class="btn btn-sm btn-outline-info" @click="goToDetail(product.id)">
+                🔍
+              </button>
+              <button class="btn btn-sm btn-outline-success" @click="addToCart(product)">장바구니</button>
+              <button class="btn btn-outline-danger btn-sm" :class="product.liked ? 'text-danger' : 'text-secondary'" @click="toggleLike(product)">
+                {{ product.liked ? '❤️' : '🤍' }} {{ product.likesCount }}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -29,118 +43,94 @@ export default {
       products: []
     };
   },
-  methods:{
-    formatPrice(dollar) {
-      const won = dollar * 1300;
-    return `₩${won.toLocaleString()}`;
-    },
-    async toggleLike(product) {
-      const user = JSON.parse(localStorage.getItem('currentUser'));
-      if (!user || !user.email) { return; }
+  async mounted() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-      try {
-        const response = await axios.post('http://localhost:3000/likes', {
-          product_id: product.id,
-          user_email: user.email,
-        });
-        // 서버 응답의 liked 값을 반영
-        //  product.liked = response.data.liked;
-        // 응답 메시지로 토글 판단
-        const msg = response?.data?.message || "";
-        if(typeof product.likesCount !== 'number') {
-          product.likesCount = 0;
-        }
-        if (msg.includes("추가")) {
-          product.liked = true;
-          product.likesCount = (product.likesCount || 0) + 1;
-        } else if (msg.includes("취소")) {
-          product.liked = false;
-          product.likesCount = Math.max((product.likesCount || 1) - 1, 0);
-        }
+    try {
+      const res = await axios.get('http://localhost:3000/products');
+      const products = res.data.map(p => ({
+        ...p,
+        liked: false,
+        likesCount: 0,
+      }));
 
-      } catch (err) {
-        console.error('좋아요 요청 실패:', err);
+      if (currentUser) {
+        const likedRes = await axios.get(`http://localhost:3000/like?user_email=${currentUser.email}`);
+        const likedIds = likedRes.data.map(l => l.product_id);
+        products.forEach(p => p.liked = likedIds.includes(p.id));
       }
+
+      const countPromises = products.map(p =>
+        axios.get(`http://localhost:3000/likes/${p.id}`)
+      );
+
+      const counts = await Promise.allSettled(countPromises);
+      counts.forEach((res, i) => {
+        products[i].likesCount = res.status === 'fulfilled' ? res.value.data.likesCount : 0;
+      });
+
+      this.products = products;
+    } catch (err) {
+      console.error('전체 상품 불러오기 실패:', err);
     }
   },
-  async mounted() {
-  try {
-    const response = await axios.get('http://localhost:3000/products');
-    const products = response.data;
+  methods: {
+    formatPrice(dollar) {
+      const won = dollar * 1300;
+      return `${won.toLocaleString()}`;
+    },
+    addToCart(product) {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      cart.push(product);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('장바구니에 추가되었습니다!');
+    },
+    async searchPosts() {
+      console.log("검색어:", this.searchKeyword);
+      if (!this.searchKeyword.trim()) {
+        alert("검색어를 입력해주세요.");
+        return;
+      }
+      try {
+        const response = await axios.get("http://localhost:3000/products/search", {
+          params: { query: this.searchKeyword.trim() },
+        });
+        this.products = response.data.map(p => ({
+          ...p,
+          liked: false,
+          likesCount: 0
+        }));
+      } catch (error) {
+        console.error("검색 실패:", error.response?.data?.message || error.message);
+        alert("검색 중 오류가 발생했습니다.");
+      }
+    },
+    toggleLike(product) {
+      const user = JSON.parse(localStorage.getItem('currentUser'));
+      if (!user) return;
 
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-
-    if (user && user.email) {
-      // 각 상품에 대해 좋아요 상태 + 카운트 가져오기
-      const statusPromises = products.map(product =>
-        axios.get(`http://localhost:3000/likes/${product.id}?user_email=${user.email}`)
-      );
-
-      const results = await Promise.all(statusPromises);
-
-      results.forEach((res, index) => {
-        products[index].liked = res.data.isLiked;
-        products[index].likesCount = res.data.likesCount;
+      axios.post('http://localhost:3000/likes', {
+        product_id: product.id,
+        user_email: user.email,
+      }).then(res => {
+        const { liked, likesCount } = res.data;
+        product.liked = liked;
+        product.likesCount = likesCount;
+      }).catch(err => {
+        console.error('좋아요 실패:', err);
       });
-    } else {
-      // 비로그인 사용자도 likesCount는 보여줄 수 있도록 처리
-      const countPromises = products.map(product =>
-        axios.get(`http://localhost:3000/likes/${product.id}`)
-      );
-
-      const results = await Promise.all(countPromises);
-
-      results.forEach((res, index) => {
-        products[index].likesCount = res.data.likesCount;
-        products[index].liked = false; // 비로그인 시 liked 상태는 false
-      });
+    },
+    goToDetail(productId) {
+      this.$router.push(`/product/${productId}`);
     }
-
-    this.products = products;
-  } catch (error) {
-    console.error("전체 상품 조회 실패:", error);
   }
-}
-}
+};
 </script>
 
 <style scoped>
-.shoppingmall-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #4A90E2;
-  text-decoration: none;
-  margin-bottom: 20px;
-}
-.all-products {
-  padding: 40px;
-}
-.product-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-.product-card {
-  width: 200px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
-}
-.product-image {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-.like-button {
-  margin-top: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2em;
-}
-
-.like-button span.liked {
-  color: red;
+.card-title {
+  font-size: 0.95rem;
+  height: 2.8em;
+  overflow: hidden;
 }
 </style>

@@ -10,7 +10,7 @@
           <p>{{ item.name }}</p>
           <p>{{ formatPrice(item.price) }}원</p>
         </div>
-        <button @click="removeFromLike(index)">삭제</button>
+        <button class="btn btn-outline-danger" @click="removeFromLike(index)">삭제</button>
       </li>
     </ul>
 
@@ -55,7 +55,7 @@ export default {
   methods: {
     formatPrice(dollar) {
       const won = dollar * 1300;
-    return `₩${won.toLocaleString()}`;
+    return `${won.toLocaleString()}`;
     },
     async removeFromLike(index) {
       const product = this.likedProducts[index];

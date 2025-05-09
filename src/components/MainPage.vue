@@ -4,12 +4,12 @@
       <h1 class="m-0 text-center flex-grow-1">RADIYA</h1>
 
       <form @submit.prevent="searchPosts" class="d-flex align-items-center gap-2 me-4" role="search">
-        <input v-model="searchKeyword" type="text" class="form-control" placeholder="검색어 입력" />
-        <button type="submit" class="btn btn-outline-primary">검색</button>
+        <input v-model="searchKeyword" type="text" class="mt-2 form-control" placeholder="검색어 입력" />
+        <button type="submit" class="mb-3 btn btn-outline-primary px-3 py-1" style="white-space: nowrap;">검색</button>
       </form>
 
 
-      <div class="d-flex gap-2">
+      <div class="mb-3 d-flex gap-2">
         <button v-if="!isLoggedIn" class="btn btn-outline-primary me-2" @click="goToLogin">로그인</button>
         <button v-else class="btn btn-outline-secondary" @click="logout">로그아웃</button>
         <button v-if="!isLoggedIn" class="btn btn-outline-secondary" @click="goToSignup">회원가입</button>
@@ -19,16 +19,16 @@
     </header>
 
 
-    <ul class="nav justify-content-center my-4 flex-wrap gap-2">
-      <li><button class="btn btn-outline-primary" @click="goToCategory('/men')">남성 의류</button></li>
-      <li><button class="btn btn-outline-primary" @click="goToCategory('/women')">여성 의류</button></li>
-      <li><button class="btn btn-outline-primary" @click="goToCategory('/jewelery')">쥬얼리</button></li>
-      <li><button class="btn btn-outline-primary" @click="goToCategory('/electronics')">전자 제품</button></li>
+    <ul class="nav justify-content-center my-4 flex-wrap gap-5">
+      <li><button class="btn btn-outline-primary mx-2" @click="goToCategory('/men')">남성 의류</button></li>
+      <li><button class="btn btn-outline-primary mx-2" @click="goToCategory('/women')">여성 의류</button></li>
+      <li><button class="btn btn-outline-primary mx-2" @click="goToCategory('/jewelery')">쥬얼리</button></li>
+      <li><button class="btn btn-outline-primary mx-2" @click="goToCategory('/electronics')">전자 제품</button></li>
     </ul>
 
 
     <section class="best-products">
-      <h2>🔥 Best 상품</h2>
+      <h2>🔥 Best 10</h2>
       <ProductList :products="products" />
       <router-link to="/products" class="d-block text-end me-4 mt-3 text-decoration-none text-primary fw-bold">
         + 전체 상품 보기
@@ -78,6 +78,10 @@ export default {
     goToLike() {
       this.$router.push('/like');
     },
+
+
+
+
     async searchPosts() {
       console.log("검색어:", this.searchKeyword);
       if (!this.searchKeyword.trim()) {
@@ -98,6 +102,11 @@ export default {
         alert("검색 중 오류가 발생했습니다.");
       }
     },
+
+
+
+
+    
     getRandomProducts(products, count) {
       const shuffled = [...products].sort(() => 0.5 - Math.random());
       return shuffled.slice(0, count);

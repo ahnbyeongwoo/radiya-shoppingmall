@@ -2,16 +2,21 @@
 <!--전체 상품 보기 전용 페이지, 목록만 담당하는 컴포넌트 역할-->
 <!--views폴더의 상품 조회 리스트들은 ProductList.vue로 전달-->
 <template>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-    <div class="col" v-for="product in localProducts" :key="product.id">
+  <div class="row g-4 px-3">
+    <div v-for="product in localProducts" :key="product.id" class="col-6 col-md-4 col-lg-3">
       <div class="card h-100 shadow-sm">
-        <img :src="product.image" class="card-img-top" :alt="product.name" style="height: 250px; object-fit: contain;">
-        <div class="card-body text-center">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="text-primary fw-bold">{{ formatPrice(product.price).toLocaleString() }}원</p>
-          <div class="d-flex justify-content-center gap-2">
-            <button class="btn btn-sm btn-outline-secondary" @click.stop="goToDetail(product.id)">🔍</button>
-            <button class="btn btn-sm btn-outline-success" @click.stop="addToCart(product)">장바구니</button>
+        <img :src="product.image" class="card-img-top p-3" :alt="product.name" style="height: 200px; object-fit: contain;">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title ">{{ product.name }}</h5>
+          <p class="text-primary fw-bold mb-2">{{ formatPrice(product.price).toLocaleString() }}원</p>
+          <div class="mt-auto d-flex justify-content-between">
+
+            <button class="btn btn-sm btn-outline-secondary me-1" @click="goToDetail(product.id)">
+                🔍
+              </button>
+              <button class="btn btn-sm btn-outline-success" @click="addToCart(product)">
+              장바구니
+            </button>
             <button class="btn btn-sm btn-outline-danger" @click.stop="toggleLike(product)">
               {{ product.liked ? '❤️' : '🤍' }} {{ product.likesCount || 0 }}
             </button>
@@ -42,7 +47,7 @@ export default {
   methods: {
     formatPrice(dollar) {
       const won = dollar * 1300;
-      return `₩${won.toLocaleString()}`;
+      return `${won.toLocaleString()}`;
     },
     addToCart(product) {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');

@@ -11,7 +11,7 @@
          <p>{{ item.name }}</p>
          <p>{{ formatPrice(item.price) }}원</p>
         </div>
-        <button @click="removeFromCart(index)">삭제</button>
+        <button class="btn btn-outline-danger" @click="removeFromCart(index)">삭제</button>
       </li>
     </ul>
     <div v-if="cartItems.length > 0" class='cart-summary'>
@@ -48,7 +48,7 @@ export default{
     },
     formatPrice(dollar) {
       const won = dollar * 1300;
-    return `₩${won.toLocaleString()}`;
+    return `${won.toLocaleString()}`;
     },
     removeFromCart(index) {
       this.cartItems.splice(index, 1);

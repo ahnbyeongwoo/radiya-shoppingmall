@@ -6,7 +6,7 @@
     <p><strong>가격:</strong> ${{ product.price }}</p>
     <p><strong>카테고리:</strong> {{ product.category }}</p>
     <p><strong>설명:</strong> {{ product.description }}</p>
-    <button @click="addToCart(product)">🛒 장바구니에 담기</button>
+    <button class="btn btn-sm btn-outline-success" @click="addToCart(product)">장바구니에 담기</button>
   </div>
 </template>
 

@@ -1,22 +1,22 @@
 <template>
   <div class="men-page">
-    <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <h2>남성 의류</h2>
-    <div v-if="products.length === 0">상품이 없습니다.</div>
-
+    <router-link to="/" class="btn btn-link text-decoration-none fs-3 fw-bold text-primary">RADIYA</router-link>
     <!-- 드롭다운 정렬 메뉴 -->
-    <div class="dropdown" @click="toggleDropdown">
-      <button class="dropdown-toggle">
-        {{ selectedSortLabel }} <span :class="{ rotate: showDropdown }">▴</span>
-      </button>
-      <ul v-if="showDropdown" class="dropdown-menu">
-        <li v-for="option in sortOptions" :key="option.value" :class="{ active: sortOrder === option.value }"
-          @click.stop="sortBy(option.value)">
-          {{ option.label }}
-        </li>
-      </ul>
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <h2 class="m-0 mb-4 fs-5 d-flex align-items-center">👕 남성 의류</h2>
+      <div class="dropdown position-relative">
+        <button class="btn btn-outline-secondary py-1 px-3" @click="toggleDropdown">
+          {{ selectedSortLabel }} <span :class="{ rotate: showDropdown }">▴</span>
+        </button>
+        <ul class="dropdown-menu show" v-if="showDropdown">
+          <li v-for="option in sortOptions" :key="option.value">
+            <button class="dropdown-item" :class="{ active: sortOrder === option.value }" @click="sortBy(option.value)">
+              {{ option.label }}
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-
     <!-- 정렬된 상품 출력 -->
     <ProductList :products="sortedProducts" />
   </div>
@@ -122,58 +122,9 @@ export default {
 .men-page {
   padding: 40px;
 }
-
-.shoppingmall-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #4A90E2;
-  text-decoration: none;
-  margin-bottom: 20px;
-}
-
-/* 드롭다운 스타일 */
 .dropdown {
   position: relative;
   display: inline-block;
   margin-bottom: 20px;
-}
-
-.dropdown-toggle {
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px 14px;
-  cursor: pointer;
-  font-size: 14px;
-  width: 130px;
-  text-align: left;
-}
-
-.dropdown-toggle .rotate {
-  display: inline-block;
-  transform: rotate(180deg);
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 130px;
-  background-color: white;
-  border: 1px solid #ccc;
-  z-index: 10;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.dropdown-menu li {
-  padding: 10px 14px;
-  cursor: pointer;
-}
-
-.dropdown-menu li:hover,
-.dropdown-menu li.active {
-  background-color: black;
-  color: white;
 }
 </style>
