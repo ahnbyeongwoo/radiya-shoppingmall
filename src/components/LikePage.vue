@@ -1,8 +1,7 @@
 <template>
   <div class="like-page">
     <router-link to="/" class="shoppingmall-title">RADIYA</router-link>
-    <h2>좋아요 목록 페이지</h2>
-
+    <h2 class="fw-bold fs-4 ">좋아요 목록 페이지</h2>
     <ul v-if="likedProducts.length > 0" class="like-list">
       <li v-for="(item, index) in likedProducts" :key="index" class="like-item">
         <img :src="item.image" alt="item.name" width="100" />

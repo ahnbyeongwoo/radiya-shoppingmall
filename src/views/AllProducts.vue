@@ -1,29 +1,34 @@
 <template>
   <div class="container">
     <router-link to="/" class="btn btn-link text-decoration-none fs-3 fw-bold text-primary">RADIYA</router-link>
-    <h2 class="my-4">전체 상품 목록</h2>
+    <h2 class="fw-bold fs-4 text-sm-center">전체 상품 목록</h2>
+    <!-- 검색창 -->
+    <div class="input-group rounded" style="width: 300px;">
+          <input type="text" v-model="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색"
+            aria-describedby="search-button" />
+          <button @click="searchPosts" class="btn btn-outline-secondary" id="search-button">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
 
-    <div v-if="products.length === 0" class="text-muted">상품이 없습니다.</div>
-    <!--검색어-->
-    <form @submit.prevent="searchPosts" class="d-flex align-items-center gap-2 me-4" role="search">
-        <input v-model="searchKeyword" type="text" class="mt-2 form-control" placeholder="검색어 입력" />
-        <button type="submit" class="mb-3 btn btn-outline-primary px-3 py-1" style="white-space: nowrap;">검색</button>
-      </form>
-
-    <div class="row g-4">
+    <div class="row g-4 p-3">
       <div class="col-6 col-md-4 col-lg-3" v-for="(product, index) in products" :key="index">
         <div class="card h-100 shadow-sm">
-          <img :src="product.image" class="card-img-top p-3" :alt="product.name" style="height: 200px; object-fit: contain;">
+          <img :src="product.image" class="card-img-top p-3" :alt="product.name"
+            style="height: 200px; object-fit: contain;">
           <div class="card-body d-flex flex-column justify-content-between">
             <h6 class="card-title">{{ product.name }}</h6>
             <p class="text-primary fw-bold">{{ formatPrice(product.price).toLocaleString() }}원</p>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <button class="btn btn-sm btn-outline-info" @click="goToDetail(product.id)">
+            <div class="mt-auto d-flex justify-content-between">
+
+              <button class="btn btn-sm btn-outline-secondary me-1" @click="goToDetail(product.id)">
                 🔍
               </button>
-              <button class="btn btn-sm btn-outline-success" @click="addToCart(product)">장바구니</button>
-              <button class="btn btn-outline-danger btn-sm" :class="product.liked ? 'text-danger' : 'text-secondary'" @click="toggleLike(product)">
-                {{ product.liked ? '❤️' : '🤍' }} {{ product.likesCount }}
+              <button class="btn btn-sm btn-outline-success" @click="addToCart(product)">
+                장바구니
+              </button>
+              <button class="btn btn-sm btn-outline-danger" @click.stop="toggleLike(product)">
+                {{ product.liked ? '❤️' : '🤍' }} {{ product.likesCount || 0 }}
               </button>
             </div>
           </div>
@@ -40,7 +45,8 @@ export default {
   name: 'AllProducts',
   data() {
     return {
-      products: []
+      products: [],
+      searchKeyword: '',
     };
   },
   async mounted() {
@@ -86,7 +92,6 @@ export default {
       alert('장바구니에 추가되었습니다!');
     },
     async searchPosts() {
-      console.log("검색어:", this.searchKeyword);
       if (!this.searchKeyword.trim()) {
         alert("검색어를 입력해주세요.");
         return;
