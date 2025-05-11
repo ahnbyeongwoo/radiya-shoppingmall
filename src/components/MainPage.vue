@@ -1,5 +1,5 @@
 <template>
-  <div class="main-page container-fluid px-5">
+  <div class="container-fluid px-5">
     <!-- 최상단 타이틀 및 우측 버튼 -->
     <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
       <h1 class="fw-bold fs-3 text-primary">RADIYA</h1>
@@ -158,7 +158,5 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
-  background-color: #ffffff;
-}
+
 </style>

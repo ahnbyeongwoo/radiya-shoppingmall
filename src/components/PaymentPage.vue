@@ -1,40 +1,54 @@
 <template>
-  <div class="payment-container">
-    <h2>결제하기</h2>
-    <form @submit.prevent="handleSubmit" class="payment-form">
-    <label> 카드사 선택:
-      <select v-model="card.company">
-        <option value="shinhan">신한카드</option>
-        <option value="kb">국민카드</option>
-        <option value="samsung">삼성카드</option>
-        <option value="nonghyup">농협카드</option>
-        <option value="woori">우리카드</option>
-        <option value="kakaopay">카카오페이</option>
-        <option value="tosspay">토스페이</option>
-      </select>
-    </label>
-    <label>
-        카드번호:
-        <input v-model="card.number" type="text" placeholder="1234-5678-9012-3456" required />
-      </label>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-body p-5">
+            <h2 class="card-title text-center mb-4">
+              결제수단
+            </h2>
+            <form @submit.prevent="handleSubmit">
+              <div class="mb-4">
+                <label for="company" class="form-label fs-5">카드사 선택</label>
+                <select id="company" v-model="card.company" class="form-select form-select-lg" required>
+                  <option value="">-- 카드사 선택 --</option>
+                  <option value="shinhan">신한카드</option>
+                  <option value="kb">국민카드</option>
+                  <option value="samsung">삼성카드</option>
+                  <option value="nonghyup">농협카드</option>
+                  <option value="woori">우리카드</option>
+                  <option value="kakaopay">카카오페이</option>
+                  <option value="tosspay">토스페이</option>
+                </select>
+              </div>
 
-      <label>
-        CVC:
-        <input v-model="card.cvc" type="text" placeholder="123" required />
-      </label>
+              <div class="mb-4">
+                <label for="number" class="form-label fs-5">카드번호</label>
+                <input id="number" v-model="card.number" type="text" class="form-control form-control-lg" placeholder="1234-5678-9012-3456" required />
+              </div>
 
-      <label>
-        결제 비밀번호:
-        <input v-model="card.password" type="password" placeholder="****" required />
-      </label>
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label for="cvc" class="form-label fs-5">CVC</label>
+                  <input id="cvc" v-model="card.cvc" type="text" class="form-control form-control-lg" placeholder="123" required />
+                </div>
+                <div class="col-md-6 mb-4">
+                  <label for="password" class="form-label fs-5">결제 비밀번호</label>
+                  <input id="password" v-model="card.password" type="password" class="form-control form-control-lg" placeholder="****" required />
+                </div>
+              </div>
 
-      <button @click="submitEvent" class="payment-button">결제</button>
-    </form>
+              <button type="submit" class="btn btn-primary btn-lg w-100">결제</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default{
+export default {
   name: 'PaymentPage',
   data() {
     return {
@@ -47,54 +61,14 @@ export default{
     };
   },
   methods: {
-    submitEvent() {
+    handleSubmit() {
       alert('결제가 완료되었습니다!');
       this.$router.push('/');
-    },
-
+    }
   }
-}
+};
 </script>
 
 <style scoped>
-.payment-container {
-  max-width: 400px;
-  margin: 40px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-label {
-  display: block;
-  margin-bottom: 15px;
-}
-input, select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-}
-button {
-  width: 100%;
-  padding: 10px;
-  font-weight: bold;
-  background-color: #4A90E2;
-  color: white;
-  border: none;
-  border-radius: 5px;
-}
-.payment-button {
-  flex: 1;
-  padding: 12px;
-  background-color: #4A90E2;
-  border: none;
-  color: white;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  
-} 
-.payment-button:hover{
-  background-color: #357ABD;
-}
+
 </style>

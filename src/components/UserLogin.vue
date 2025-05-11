@@ -1,27 +1,34 @@
-<template><!--로그인-->
-  <div class="container">
-    <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <div class="login-container">
-      <h2>로그인</h2>
-      <form @submit.prevent="login" id="login-form">
-        <div><!--이메일 란-->
-          <label for="email">이메일</label>
-          <input type="email" id="email" v-model="email" placeholder="이메일을 입력하세요.">
-        </div>
-        <div><!--비밀번호 란-->
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" v-model="password" placeholder="비밀번호를 입력하세요.">
-        </div>
-        <div class="button-group">
-          <button type="submit" class="login-button">로그인</button>
-          <button type="button" class="signup-button" @click="goToSignUp">회원가입</button>
-        </div>
-      </form>
-    </div>
+<template>
+  <router-link to="/" class="text-decoration-none text-primary fs-3 fw-bold mb-3">RADIYA</router-link>
+  <div class="login-bg">
+    <form class="login-form" @submit.prevent="login">
+      <h2 class="login-title">로그인,</h2>
+      <div class="form-group mb-4">
+        <input
+          type="email"
+          v-model="email"
+          class="form-control-line"
+          placeholder="EMAIL"
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-group mb-4">
+        <input
+          type="password"
+          v-model="password"
+          class="form-control-line"
+          placeholder="PASSWORD"
+          autocomplete="off"
+        />
+      </div>
+      <button type="submit" class="btn-signin mb-3">SIGN IN</button>
+      <button type="submit" class="btn-signin mb-3" @click="goToSignUp">회원가입</button>
+
+    </form>
   </div>
 </template>
- 
- <script>
+
+<script>
 import axios from 'axios';
 
 export default {
@@ -32,12 +39,12 @@ export default {
       password: '',
     };
   },
-
   methods: {
     goToSignUp() {
       this.$router.push('/signup'); // 회원가입 페이지로 이동
     },
-    login() {// 로그인 요청
+
+    login() {
       const loginData = {
         email: this.email,
         password: this.password,
@@ -46,9 +53,8 @@ export default {
       axios.post('http://localhost:3000/login', loginData)
         .then(response => {
           alert(response.data.message);
-          if (response.data.user) {// 로그인 성공 시 사용자 정보 저장
-            console.log('로그인된 사용자:', response.data.user);
-            localStorage.setItem('currentUser', JSON.stringify(response.data.user));// 로컬 스토리지에 사용자 정보 저장
+          if (response.data.user) {
+            localStorage.setItem('currentUser', JSON.stringify(response.data.user));
             window.dispatchEvent(new Event('storage'));
             this.$router.push('/');
           }
@@ -56,107 +62,102 @@ export default {
         .catch(error => {
           console.error('로그인 오류:', error);
           alert('로그인 실패! 아이디와 비밀번호를 확인하세요.');
+
         });
     }
-  },
+  }
 }
+</script>
 
- </script>
- 
- <style>
- .container {
+<style scoped>
+.login-bg {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-form {
+  width: 340px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 40px;
-  background-color: #f5f7fa;
-  min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  align-items: stretch;
 }
-
-.shoppingmall-title {
-  font-size: 32px;
+.login-title {
+  font-size: 2rem;
   font-weight: bold;
-  color: #4A90E2;
-  text-decoration: none;
-  margin-bottom: 20px;
+  margin-bottom: 36px;
+  text-align: left;
+  margin-top: 0;
+  letter-spacing: -1px;
 }
-
-.login-container {
-  background-color: #ffffff;
-  padding: 40px 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-}
-
-.login-container h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-}
-
-form label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 600;
-  color: #444;
-}
-
-form input {
-  width: 100%;
-  padding: 10px 12px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-form input:focus {
-  border-color: #4A90E2;
+.form-control-line {
+  border: none;
+  border-bottom: 2px solid #bbb;
+  border-radius: 0;
+  padding: 14px 0 8px 0;
+  font-size: 1rem;
+  background: transparent;
   outline: none;
-  box-shadow: 0 0 5px rgba(74, 144, 226, 0.4);
+  color: #222;
+  font-weight: 500;
+  letter-spacing: 1px;
+  box-shadow: none;
 }
-
-.button-group {/*로그인 회원가입 버튼 그룹 */
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 20px;
+.form-control-line:focus {
+  border-bottom: 2px solid #b39c6a;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
 }
-
-.login-button{
-  flex: 1;
-  padding: 12px;
-  background-color: #4A90E2;
-  border: none;
-  color: white;
-  font-size: 16px;
-  border-radius: 6px;
+.form-control-line::placeholder {
+  color: #ccc;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.forgot-row {
+  margin-top: -12px;
+  margin-bottom: 28px;
+}
+.forgot-password {
+  color: #bbb;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
-
-.login-button:hover{
-  background-color: #357ABD;
-}
-.signup-button{
-  flex: 1;
-  padding: 12px;
-  background-color: #4A90E2;
+.btn-signin {
+  width: 100%;
+  background: #c6b288;
+  color: #fff;
   border: none;
-  color: white;
-  font-size: 16px;
-  border-radius: 6px;
+  border-radius: 25px;
+  padding: 13px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  margin-top: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.2s;
 }
-
-.signup-button:hover{
-  background-color: #357ABD;
+.btn-signin:hover {
+  background: #b39c6a;
 }
-
-
- </style>
+.btn-facebook {
+  width: 100%;
+  background: transparent;
+  color: #555;
+  border: 2px solid #e2e2e2;
+  border-radius: 25px;
+  padding: 13px 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+.btn-facebook:hover {
+  border: 2px solid #aab8d9;
+}
+.facebook-text {
+  color: #3b5998;
+  font-weight: 600;
+}
+</style>

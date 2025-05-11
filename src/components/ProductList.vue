@@ -132,54 +132,5 @@ export default {
 </script>
 
 <style scoped>
-.product-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-top: 20px;
-}
 
-.product-card {
-  width: 200px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
-}
-
-.product-image {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-
-.product-name {
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.product-price {
-  margin-top: 6px;
-  font-size: 1.5em;
-}
-
-.like-button {
-  margin-top: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2em;
-}
-
-.like-button span.liked {
-  color: red;
-}
-
-.detail-button {
-  margin-top: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2em;
-}
 </style>

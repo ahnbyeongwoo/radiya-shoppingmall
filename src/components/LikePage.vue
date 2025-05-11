@@ -1,13 +1,16 @@
 <template>
-  <div class="like-page">
-    <router-link to="/" class="shoppingmall-title">RADIYA</router-link>
-    <h2 class="fw-bold fs-4 ">좋아요 목록 페이지</h2>
-    <ul v-if="likedProducts.length > 0" class="like-list">
-      <li v-for="(item, index) in likedProducts" :key="index" class="like-item">
-        <img :src="item.image" alt="item.name" width="100" />
-        <div class="like-info">
-          <p>{{ item.name }}</p>
-          <p>{{ formatPrice(item.price) }}원</p>
+  <div class="container py-4">
+    <router-link to="/" class="text-decoration-none text-primary fs-3 fw-bold">RADIYA</router-link>
+    <h2 class="fw-bold mt-2 ">좋아요 목록 페이지</h2>
+    <ul v-if="likedProducts.length > 0" class="list-group mt-4">
+      <li v-for="(item, index) in likedProducts" :key="index" 
+      class="list-group-item d-flex align-items-center justify-content-between flex-wrap">
+      <div class="d-flex align-items-center gap-4">
+          <img :src="item.image" alt="item.name" width="100" class="img-thumbnail" />
+        <div>
+          <h5 class="mb-1">{{ item.name }}</h5>
+          <p class="text-primary fw-bold mb-2">{{ formatPrice(item.price) }}원</p>
+        </div>
         </div>
         <button class="btn btn-outline-danger" @click="removeFromLike(index)">삭제</button>
       </li>
@@ -77,42 +80,8 @@ export default {
 </script>
 
 <style scoped>
-.like-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-.shoppingmall-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #4A90E2;
-  text-decoration: none;
-  margin-bottom: 20px;
-}
-.like-list {
-  list-style: none;
-  padding: 0;
+img {
+  object-fit: contain;
 }
 
-.like-item {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 16px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.like-item img {
-  width: 100px;
-  height: auto;
-  border-radius: 4px;
-}
-
-.like-info {
-  flex: 1;
-}
-
-.like-info p {
-  margin: 4px 0;
-}
 </style>
