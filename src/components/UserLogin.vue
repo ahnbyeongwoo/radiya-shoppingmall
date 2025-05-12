@@ -1,30 +1,39 @@
 <template>
-  <router-link to="/" class="text-decoration-none text-primary fs-3 fw-bold mb-3">RADIYA</router-link>
-  <div class="login-bg">
-    <form class="login-form" @submit.prevent="login">
-      <h2 class="login-title">로그인,</h2>
-      <div class="form-group mb-4">
-        <input
-          type="email"
-          v-model="email"
-          class="form-control-line"
-          placeholder="EMAIL"
-          autocomplete="off"
-        />
-      </div>
-      <div class="form-group mb-4">
-        <input
-          type="password"
-          v-model="password"
-          class="form-control-line"
-          placeholder="PASSWORD"
-          autocomplete="off"
-        />
-      </div>
-      <button type="submit" class="btn-signin mb-3">SIGN IN</button>
-      <button type="submit" class="btn-signin mb-3" @click="goToSignUp">회원가입</button>
+  <div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
+      <router-link to="/" class="text-decoration-none text-primary fs-3 fw-bold text-center mb-3 d-block">
+        RADIYA
+      </router-link>
 
-    </form>
+      <form class="login-form" @submit.prevent="login">
+        <h2 class="login-title">로그인,</h2>
+
+        <div class="form-group mb-4">
+          <input
+            type="email"
+            v-model="email"
+            class="form-control-line form-control"
+            placeholder="EMAIL"
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        <div class="form-group mb-4">
+          <input
+            type="password"
+            v-model="password"
+            class="form-control-line form-control"
+            placeholder="PASSWORD"
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn-signin mb-3">SIGN IN</button>
+        <button type="button" class="btn-signin mb-3" @click="goToSignUp">회원가입</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -41,9 +50,8 @@ export default {
   },
   methods: {
     goToSignUp() {
-      this.$router.push('/signup'); // 회원가입 페이지로 이동
+      this.$router.push('/signup');
     },
-
     login() {
       const loginData = {
         email: this.email,
@@ -62,7 +70,6 @@ export default {
         .catch(error => {
           console.error('로그인 오류:', error);
           alert('로그인 실패! 아이디와 비밀번호를 확인하세요.');
-
         });
     }
   }
@@ -78,7 +85,6 @@ export default {
   align-items: center;
 }
 .login-form {
-  width: 340px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -115,15 +121,6 @@ export default {
   font-weight: 500;
   letter-spacing: 1px;
 }
-.forgot-row {
-  margin-top: -12px;
-  margin-bottom: 28px;
-}
-.forgot-password {
-  color: #bbb;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
 .btn-signin {
   width: 100%;
   background: #c6b288;
@@ -136,28 +133,8 @@ export default {
   margin-bottom: 18px;
   margin-top: 6px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 .btn-signin:hover {
   background: #b39c6a;
-}
-.btn-facebook {
-  width: 100%;
-  background: transparent;
-  color: #555;
-  border: 2px solid #e2e2e2;
-  border-radius: 25px;
-  padding: 13px 0;
-  font-size: 1.1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: border 0.2s;
-}
-.btn-facebook:hover {
-  border: 2px solid #aab8d9;
-}
-.facebook-text {
-  color: #3b5998;
-  font-weight: 600;
 }
 </style>

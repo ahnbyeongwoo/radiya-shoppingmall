@@ -1,26 +1,68 @@
 <template><!--회원가입-->
-  <div class="container">
-    <router-link to='/' class="shoppingmall-title">RADIYA</router-link>
-    <div class="signup-container">
-      <h2>회원가입</h2>
-      <form @submit.prevent="submitForm" id="signup-form">
-        <div><!--닉네임 란-->
-          <label for="name">닉네임</label>
-          <input type="text" id="name" v-model="name" placeholder="닉네임을 입력하세요.">
-        </div><!--이메일 란-->
-        <label for="email">이메일</label>
-        <input type="email" id="email" v-model="email" placeholder="이메일을 입력하세요.">
-        <div><!--비밀번호 란-->
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" v-model="password" placeholder="비밀번호를 입력하세요.">
+  <div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
+      <router-link to="/" class="text-decoration-none text-primary fs-3 fw-bold text-center mb-3 d-block">
+        RADIYA
+      </router-link>
+
+      <form class="signup-form" @submit.prevent="submitForm">
+        <h2 class="signup-title">회원가입,</h2>
+
+        <label for="name">닉네임</label><!--닉네임란-->
+        <div class="form-group mb-4">
+          <input
+            type="text"
+            v-model="name"
+            class="form-control-line form-control"
+            placeholder="name"
+            autocomplete="off"
+            required
+          />
         </div>
-        <div><!--비밀번호 확인 란-->
-          <label for="passwordConfirm">비밀번호 확인</label>
-          <input type="password" id="passwordConfirm" v-model="passwordConfirm" placeholder="비밀번호를 한번 더 입력하세요.">
+
+        <label for="email">이메일</label><!--이메일란-->
+        <div class="form-group mb-4">
+          <input
+            type="email"
+            v-model="email"
+            class="form-control-line form-control"
+            placeholder="email"
+            autocomplete="off"
+            required
+          />
         </div>
-        <button type="submit" class="signUp-button">회원가입</button>
+
+        <label for="password">비밀번호</label><!--비밀번호 란-->
+        <div class="form-group mb-4">
+          <input
+            type="password"
+            v-model="password"
+            class="form-control-line form-control"
+            placeholder="password"
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        <label for="passwordConfirm">비밀번호 확인</label><!--비밀번호 확인 란-->
+        <div class="form-group mb-4">
+          <input
+            type="password"
+            v-model="passwordConfirm"
+            class="form-control-line form-control"
+            placeholder="passwordConfirm"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <button type="submit" class="btn-signUp mb-3">회원가입</button>
       </form>
     </div>
+
+
+
+
+
   </div>
 </template>
 
@@ -30,8 +72,8 @@ export default {
   name: 'SignUp',
   data() {
     return {
-      email: '',
       name: '',
+      email: '',
       password: '',
       passwordConfirm: '',
     };
@@ -66,7 +108,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+/* .container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -136,5 +178,66 @@ form input:focus {
 
 .signUp-button:hover {
   background-color: #357ABD;
+} */
+
+.signup-bg {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.signup-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 36px;
+  text-align: left;
+  margin-top: 0;
+  letter-spacing: -1px;
+}
+.form-control-line {
+  border: none;
+  border-bottom: 2px solid #bbb;
+  border-radius: 0;
+  padding: 14px 0 8px 0;
+  font-size: 1rem;
+  background: transparent;
+  outline: none;
+  color: #222;
+  font-weight: 500;
+  letter-spacing: 1px;
+  box-shadow: none;
+}
+.form-control-line:focus {
+  border-bottom: 2px solid #b39c6a;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+.form-control-line::placeholder {
+  color: #ccc;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.btn-signUp {
+  width: 100%;
+  background: #c6b288;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 13px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  margin-top: 6px;
+  cursor: pointer;
+}
+.btn-signUp:hover {
+  background: #b39c6a;
 }
 </style>
