@@ -1,9 +1,12 @@
 <template>
   <div class="men-page">
-    <router-link to="/" class="btn btn-link text-decoration-none fs-3 fw-bold text-primary">RADIYA</router-link>
+    <router-link to="/" class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary" style="height: 60px;">
+      <img src="@/assets/logotitle.png" alt="Logo" class="logo" />
+      RADIYA
+    </router-link>
     <!-- 드롭다운 정렬 메뉴 -->
     <div class="d-flex align-items-center gap-3 mb-4">
-      <h2 class="m-0 mb-4 fs-5 d-flex align-items-center">👕 남성 의류</h2>
+      <h2 class="m-0 mb-4 fs-5 d-flex align-items-center">mens</h2>
       <div class="dropdown position-relative">
         <button class="btn btn-outline-secondary py-1 px-3" @click="toggleDropdown">
           {{ selectedSortLabel }} <span :class="{ rotate: showDropdown }">▴</span>
@@ -36,7 +39,7 @@ export default {
       products: [],
       sortOrder: 'high',
       showDropdown: false,
-      sortOptions: [
+      sortOptions: [//정렬 옵션 선택함
         { value: 'random', label: '랜덤순' },
         { value: 'high', label: '높은 가격순' },
         { value: 'low', label: '낮은 가격순' },
@@ -44,11 +47,11 @@ export default {
     };
   },
   computed: {
-    selectedSortLabel() {
-      const found = this.sortOptions.find(opt => opt.value === this.sortOrder);
+    selectedSortLabel() {// 드롭다운에서 선택된 정렬 옵션의 레이블을 반환
+      const found = this.sortOptions.find(opt => opt.value === this.sortOrder);//선택된 정렬 옵션 찾기
       return found ? found.label : '정렬';
     },
-    sortedProducts() {
+    sortedProducts() {//상품 목록 정렬된 형태로 출력
       if (this.sortOrder === 'low') {
         return [...this.products].sort((a, b) => a.price - b.price);
       } else if (this.sortOrder === 'high') {
@@ -61,25 +64,22 @@ export default {
   },
   methods: {
     toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
+      this.showDropdown = !this.showDropdown;//메뉴 열고 닫기
     },
-    sortBy(order) {
+    sortBy(order) {//정렬 옵션 선택하기
       this.sortOrder = order;
       this.showDropdown = false;
     }
   },
   async mounted() {
     try {
-      // 1. 상품 불러오기
       const response = await axios.get(
         `http://localhost:3000/products/category/${encodeURIComponent('men clothing')}`
       );
       const productList = response.data;
 
-      // 2. 로그인된 사용자 정보 확인
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-      // 3. 로그인된 경우 → 좋아요 상태 정보 불러오기
       if (currentUser && currentUser.email) {
         const likeRes = await axios.get(
           `http://localhost:3000/like?user_email=${currentUser.email}`
@@ -93,7 +93,6 @@ export default {
         }
       }
 
-      // 4. 모든 상품의 좋아요 수 불러오기
       const countPromises = productList.map((product) =>
         axios.get(`http://localhost:3000/likes/${product.id}`)
       );
@@ -107,7 +106,6 @@ export default {
         }
       });
 
-      // 5. 반영된 상품 목록 저장
       this.products = productList;
 
     } catch (error) {
@@ -126,5 +124,11 @@ export default {
   position: relative;
   display: inline-block;
   margin-bottom: 20px;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block;
 }
 </style>

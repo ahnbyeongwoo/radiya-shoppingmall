@@ -1,9 +1,12 @@
 <template>
   <div class="electronic-page">
-    <router-link to="/" class="btn btn-link text-decoration-none fs-3 fw-bold text-primary">RADIYA</router-link>
+    <router-link to="/" class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary" style="height: 60px;">
+      <img src="@/assets/logotitle.png" alt="Logo" class="logo" />
+      RADIYA
+    </router-link>
     <!-- 드롭다운 정렬 메뉴 -->
     <div class="d-flex align-items-center gap-3 mb-4">
-      <h2 class="m-0 mb-4 fs-5 d-flex align-items-center">💻 전자 제품</h2>
+      <h2 class="m-0 mb-4 fs-5 d-flex align-items-center">electronics</h2>
       <div class="dropdown position-relative">
         <button class="btn btn-outline-secondary py-1 px-3" @click="toggleDropdown">
           {{ selectedSortLabel }} <span :class="{ rotate: showDropdown }">▴</span>
@@ -70,16 +73,13 @@ export default {
   },
   async mounted() {
     try {
-      // 1. 상품 불러오기
       const response = await axios.get(
         `http://localhost:3000/products/category/${encodeURIComponent('electronics')}`
       );
       const productList = response.data;
 
-      // 2. 로그인된 사용자 정보 확인
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-      // 3. 로그인된 경우 → 좋아요 상태 정보 불러오기
       if (currentUser && currentUser.email) {
         const likeRes = await axios.get(
           `http://localhost:3000/like?user_email=${currentUser.email}`
@@ -93,7 +93,6 @@ export default {
         }
       }
 
-      // 4. 모든 상품의 좋아요 수 불러오기
       const countPromises = productList.map((product) =>
         axios.get(`http://localhost:3000/likes/${product.id}`)
       );
@@ -107,7 +106,6 @@ export default {
         }
       });
 
-      // 5. 반영된 상품 목록 저장
       this.products = productList;
 
     } catch (error) {
@@ -126,5 +124,10 @@ export default {
   display: inline-block;
   margin-bottom: 20px;
 }
-
+.logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block;
+}
 </style>

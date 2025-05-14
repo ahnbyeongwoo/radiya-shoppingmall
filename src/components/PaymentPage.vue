@@ -1,13 +1,13 @@
 <template>
-  <div class="container mt-5">
+  <div class="container mt-5"><!--상단 마진-->
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-8"><!-- 카드 스타일 박스와 그림자 -->
         <div class="card shadow-sm">
           <div class="card-body p-5">
             <h2 class="card-title text-center mb-4">
               결제수단
             </h2>
-            <form @submit.prevent="handleSubmit">
+            <form @submit.prevent="handleSubmit"><!--결제 폼-->
               <div class="mb-4">
                 <label for="company" class="form-label fs-5">카드사 선택</label>
                 <select id="company" v-model="card.company" class="form-select form-select-lg" required>
@@ -22,7 +22,7 @@
                 </select>
               </div>
 
-              <div class="mb-4">
+              <div class="mb-4"><!--카드번호 입력칸-->
                 <label for="number" class="form-label fs-5">카드번호</label>
                 <input id="number" v-model="card.number" type="text" class="form-control form-control-lg" placeholder="1234-5678-9012-3456" required />
               </div>

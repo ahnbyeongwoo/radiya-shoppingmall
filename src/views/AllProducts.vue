@@ -1,9 +1,12 @@
 <template>
   <div class="container">
-    <router-link to="/" class="btn btn-link text-decoration-none fs-3 fw-bold text-primary">RADIYA</router-link>
+    <router-link to="/" class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary" style="height: 60px;">
+      <img src="@/assets/logotitle.png" alt="Logo" class="logo" />
+      RADIYA
+    </router-link>
     <h2 class="fw-bold fs-4 text-sm-center">전체 상품 목록</h2>
     <!-- 검색창 -->
-    <div class="input-group rounded" style="width: 300px;">
+    <div class="input-group rounded" style="width: 300px;"><!--검색, 장바구니 영역-->
           <input type="text" v-model="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색"
             aria-describedby="search-button" />
           <button @click="searchPosts" class="btn btn-outline-secondary" id="search-button">
@@ -52,7 +55,7 @@ export default {
   async mounted() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    try {
+    try {// 전체 상품 목록 불러옴
       const res = await axios.get('http://localhost:3000/products');
       const products = res.data.map(p => ({
         ...p,
@@ -68,7 +71,7 @@ export default {
 
       const countPromises = products.map(p =>
         axios.get(`http://localhost:3000/likes/${p.id}`)
-      );
+      );//좋아요 수 불러옴
 
       const counts = await Promise.allSettled(countPromises);
       counts.forEach((res, i) => {
@@ -91,7 +94,7 @@ export default {
       localStorage.setItem('cart', JSON.stringify(cart));
       alert('장바구니에 추가되었습니다!');
     },
-    async searchPosts() {
+    async searchPosts() {//메인페이지와 같이 검색된 상품 목록 업데이트
       if (!this.searchKeyword.trim()) {
         alert("검색어를 입력해주세요.");
         return;
@@ -110,7 +113,7 @@ export default {
         alert("검색 중 오류가 발생했습니다.");
       }
     },
-    toggleLike(product) {
+    toggleLike(product) {//좋아요 토글
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) return;
 
@@ -127,7 +130,7 @@ export default {
     },
     goToDetail(productId) {
       this.$router.push(`/product/${productId}`);
-    }
+    },
   }
 };
 </script>
@@ -137,5 +140,11 @@ export default {
   font-size: 0.95rem;
   height: 2.8em;
   overflow: hidden;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block;
 }
 </style>

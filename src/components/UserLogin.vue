@@ -5,10 +5,10 @@
         RADIYA
       </router-link>
 
-      <form class="login-form" @submit.prevent="login">
+      <form class="login-form" @submit.prevent="login"><!--로그인 폼-->
         <h2 class="login-title">로그인,</h2>
 
-        <div class="form-group mb-4">
+        <div class="form-group mb-4"><!--이메일 란-->
           <input
             type="email"
             v-model="email"
@@ -19,7 +19,7 @@
           />
         </div>
 
-        <div class="form-group mb-4">
+        <div class="form-group mb-4"><!--비밀번호 란-->
           <input
             type="password"
             v-model="password"
@@ -30,7 +30,7 @@
           />
         </div>
 
-        <button type="submit" class="btn-signin mb-3">SIGN IN</button>
+        <button type="submit" class="btn-signin mb-3">로그인</button>
         <button type="button" class="btn-signin mb-3" @click="goToSignUp">회원가입</button>
       </form>
     </div>
@@ -61,7 +61,7 @@ export default {
       axios.post('http://localhost:3000/login', loginData)
         .then(response => {
           alert(response.data.message);
-          if (response.data.user) {
+          if (response.data.user) { // 로그인 성공 시 사용자 정보 저장 및 홈으로 이동
             localStorage.setItem('currentUser', JSON.stringify(response.data.user));
             window.dispatchEvent(new Event('storage'));
             this.$router.push('/');
@@ -77,14 +77,14 @@ export default {
 </script>
 
 <style scoped>
-.login-bg {
+.login-bg {/* 로그인 전체 배경 */
   min-height: 100vh;
   background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.login-form {
+.login-form {/*로그인 폼 */
   display: flex;
   flex-direction: column;
   align-items: stretch;
