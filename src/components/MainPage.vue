@@ -3,8 +3,8 @@
     <!-- 최상단 타이틀 및 우측 버튼 -->
     <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
       <h1 class="fw-bold fs-3 text-primary d-flex align-items-center mb-0">
-        <img src="@/assets/logotitle.png" alt="Logo" class="logo me-2" />
-        RADIYA
+        <img src="@/assets/wix.png" alt="Logo" class="logo me-2" />
+        <!-- RADIYA -->
       </h1>
       <div class="category-nav d-flex justify-content-center gap-4 my-4"><!--검색, 장바구니, 좋아요 영역-->
         <!-- 검색창 -->
@@ -154,8 +154,8 @@ export default {
 
 <style scoped>
 .logo {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   display: inline-block;
 }

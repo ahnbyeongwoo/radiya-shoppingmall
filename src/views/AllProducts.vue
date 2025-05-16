@@ -1,12 +1,19 @@
 <template>
   <div class="container">
-    <router-link to="/" class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary" style="height: 60px;">
-      <img src="@/assets/logotitle.png" alt="Logo" class="logo" />
-      RADIYA
+    <router-link
+      to="/"
+      class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary"
+      style="height: 60px;"
+    >
+      <img
+        src="@/assets/wix.png"
+        alt="Logo"
+        class="logo me-2 logo-hover"
+      />
     </router-link>
     <h2 class="fw-bold fs-4 text-sm-center">전체 상품 목록</h2>
     <!-- 검색창 -->
-    <div class="input-group rounded" style="width: 300px;"><!--검색, 장바구니 영역-->
+    <div class="input-group rounded " style="width: 300px; margin-left: 15px"><!--검색, 장바구니 영역-->
           <input type="text" v-model="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색"
             aria-describedby="search-button" />
           <button @click="searchPosts" class="btn btn-outline-secondary" id="search-button">
@@ -142,9 +149,11 @@ export default {
   overflow: hidden;
 }
 .logo {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   display: block;
+  margin-top: 12px; /* 살짝 밑으로 */
+  transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s, filter 0.3s;
 }
 </style>

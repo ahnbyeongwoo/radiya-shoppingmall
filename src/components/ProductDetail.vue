@@ -1,8 +1,15 @@
 <template>
   <div class="container py-4">
- <router-link to="/" class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary" style="height: 60px;">
-      <img src="@/assets/logotitle.png" alt="Logo" class="logo" />
-      RADIYA
+ <router-link
+      to="/"
+      class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary"
+      style="height: 60px;"
+    >
+      <img
+        src="@/assets/wix.png"
+        alt="Logo"
+        class="logo me-2 logo-hover"
+      />
     </router-link>
   </div>
  
@@ -62,9 +69,11 @@ export default {
   border-radius: 12px;
 }
 .logo {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   display: block;
+  margin-top: 12px; /* 살짝 밑으로 */
+  transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s, filter 0.3s;
 }
 </style>

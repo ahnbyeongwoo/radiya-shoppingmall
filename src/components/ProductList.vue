@@ -117,9 +117,9 @@ export default {
   },
   watch: { // props.products가 바뀌면 로컬 상태도 동기화
     products: {
-      immediate: true,
-      handler(newProducts) {
-        this.localProducts = newProducts.map(p => ({ ...p }));
+      immediate: true,//컴포넌트가 처음 생성될 때에도 실행됨
+      handler(newProducts) {//products가 변경될 때마다 로컬 상태를 업데이트
+        this.localProducts = newProducts.map(p => ({ ...p }));// 새로운 products를 localProducts에 복사
       }
     }
   }
