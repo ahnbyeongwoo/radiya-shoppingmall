@@ -11,7 +11,7 @@
         class="logo me-2 logo-hover"
       />
     </router-link>
-    <h2 class="fw-bold mt-2 ">좋아요 목록 페이지</h2>
+    <h2 class="fw-bold mt-2 ">관심상품</h2>
     <ul v-if="likedProducts.length > 0" class="list-group mt-4">
       <li v-for="(item, index) in likedProducts" :key="index" 
       class="list-group-item d-flex align-items-center justify-content-between flex-wrap"> <!-- 좋아요한 각 상품 반복 렌더링 -->

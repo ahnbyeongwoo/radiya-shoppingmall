@@ -11,7 +11,7 @@
         class="logo me-2 logo-hover"
       />
     </router-link>
-    <h2 class="fw-bold mt-2">🛒 장바구니</h2>
+    <h2 class="fw-bold mt-2">장바구니</h2>
 
     <div v-if="cartItems.length === 0" class="mt-4 fs-5 text-muted">장바구니가 비었습니다.</div>
     <ul v-else class="list-group mt-4">
