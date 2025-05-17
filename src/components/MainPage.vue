@@ -24,8 +24,8 @@
     <!-- 회원가입/로그인 -->
     <div class="d-flex justify-content-end mt-2 gap-2 mb-4">
       <button v-if="!isLoggedIn" class="btn btn-outline-primary btn-sm" @click="goToLogin">로그인</button>
-      <button v-if="!isLoggedIn" class="btn btn-outline-secondary btn-sm" @click="goToSignup">회원가입</button>
       <button v-else class="btn btn-outline-secondary btn-sm" @click="logout">로그아웃</button>
+      <button v-if="!isLoggedIn" class="btn btn-outline-secondary btn-sm" @click="goToSignup">회원가입</button>
     </div>
 
     <!-- 카테고리 -->
@@ -110,10 +110,12 @@ export default {
   },
   async mounted() {
     try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));// 로그인 사용자 정보 확인
+      this.isLoggedIn = !!(currentUser && currentUser.email);//새로고침해도 로그인 상태 유지
+
       const productRes = await axios.get('http://localhost:3000/products');// 전체 상품 조회
       const productList = productRes.data;
 
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));// 로그인 사용자 정보 확인
 
       if (currentUser && currentUser.email) {// 로그인한 경우 -> 좋아요 정보 요청
         const likeRes = await axios.get(// 좋아요 정보 axios 요청
