@@ -62,7 +62,7 @@ export default {
       if (!user || !user.email) return;
 
       try {
-        const response = await axios.post('http://localhost:3000/likes', {
+        const response = await axios.post(`${process.env.VUE_APP_API_URL}/likes`, {
           product_id: product.id,
           user_email: user.email,
         });
@@ -91,7 +91,7 @@ export default {
 
       if (user && user.email) {
         const likeStatusPromises = this.localProducts.map(product =>
-          axios.get(`http://localhost:3000/likes/${product.id}?user_email=${user.email}`)
+          axios.get(`${process.env.VUE_APP_API_URL}/likes/${product.id}?user_email=${user.email}`)
         );//좋아요 상태 요청 이메일했을때
         const responses = await Promise.all(likeStatusPromises);
 
@@ -102,7 +102,7 @@ export default {
 
       } else {//로그인 안되어있을때 좋아요 수만 표시
         const countPromises = this.localProducts.map(product =>
-          axios.get(`http://localhost:3000/likes/${product.id}`)
+          axios.get(`${process.env.VUE_APP_API_URL}/likes/${product.id}`)
         );
         const responses = await Promise.all(countPromises);
 

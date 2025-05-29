@@ -51,13 +51,13 @@ export default {
     }
 
     try {// 좋아요한 상품 목록 조회
-      const res = await axios.get(`http://localhost:3000/like?user_email=${this.currentUser.email}`);
+      const res = await axios.get(`${process.env.VUE_APP_API_URL}/like?user_email=${this.currentUser.email}`);
       const likedIds = res.data.map((item) => item.product_id);// 좋아요한 상품 ID 배열 추출
 
       if (likedIds.length === 0) return;
 
        // 전체 상품 목록 요청
-      const productRes = await axios.get("http://localhost:3000/products");
+      const productRes = await axios.get(`${process.env.VUE_APP_API_URL}/products`);
       const allProducts = productRes.data;
 
       this.likedProducts = allProducts.filter((p) => likedIds.includes(p.id));// 좋아요한 상품 ID로 필터링
@@ -75,7 +75,7 @@ export default {
       const product = this.likedProducts[index];//좋아요 삭제할 상품 정보
       try {
         // 좋아요 삭제 요청
-        await axios.post("http://localhost:3000/likes", {
+        await axios.post(`${process.env.VUE_APP_API_URL}/likes`, {
           product_id: product.id,
           user_email: this.currentUser.email,
         });

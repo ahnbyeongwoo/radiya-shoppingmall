@@ -81,7 +81,7 @@ export default {
   async mounted() {
     try {
       const response = await axios.get(
-        `http://localhost:3000/products/category/${encodeURIComponent('men clothing')}`
+        `${process.env.VUE_APP_API_URL}/products/category/${encodeURIComponent('men clothing')}`
       );
       const productList = response.data;
 
@@ -89,7 +89,7 @@ export default {
 
       if (currentUser && currentUser.email) {
         const likeRes = await axios.get(
-          `http://localhost:3000/like?user_email=${currentUser.email}`
+          `${process.env.VUE_APP_API_URL}/like?user_email=${currentUser.email}`
         );
 
         if (Array.isArray(likeRes.data)) {
@@ -101,7 +101,7 @@ export default {
       }
 
       const countPromises = productList.map((product) =>
-        axios.get(`http://localhost:3000/likes/${product.id}`)
+        axios.get(`${process.env.VUE_APP_API_URL}/likes/${product.id}`)
       );
       const likeCounts = await Promise.allSettled(countPromises);
 

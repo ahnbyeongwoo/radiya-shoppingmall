@@ -90,7 +90,7 @@ export default {
         return;
       }
       try {
-        const response = await axios.get("http://localhost:3000/products/search", {
+        const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/search`, {
           params: { query: this.searchKeyword.trim() },
         });
         this.products = response.data.map(p => ({// // 검색 결과에 좋아요 관련 필드 기본값 추가
@@ -113,13 +113,13 @@ export default {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));// 로그인 사용자 정보 확인
       this.isLoggedIn = !!(currentUser && currentUser.email);//새로고침해도 로그인 상태 유지
 
-      const productRes = await axios.get('http://localhost:3000/products');// 전체 상품 조회
+      const productRes = await axios.get(`${process.env.VUE_APP_API_URL}/products`);// 전체 상품 조회
       const productList = productRes.data;
 
 
       if (currentUser && currentUser.email) {// 로그인한 경우 -> 좋아요 정보 요청
         const likeRes = await axios.get(// 좋아요 정보 axios 요청
-          `http://localhost:3000/like?user_email=${currentUser.email}`
+          `${process.env.VUE_APP_API_URL}/like?user_email=${currentUser.email}`
         );
 
         if (Array.isArray(likeRes.data)) {//배열인지 확인하고 좋아요 상품 id 추출
@@ -133,7 +133,7 @@ export default {
       }
       //상품별 좋아요 개수 요청
       const countPromises = productList.map((product) =>
-        axios.get(`http://localhost:3000/likes/${product.id}`)
+        axios.get(`${process.env.VUE_APP_API_URL}/likes/${product.id}`)
       );
 
       const likeCounts = await Promise.allSettled(countPromises);// 모든 좋아요 개수 요청 처리

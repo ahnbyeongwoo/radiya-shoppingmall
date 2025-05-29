@@ -63,7 +63,7 @@ export default {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     try {// 전체 상품 목록 불러옴
-      const res = await axios.get('http://localhost:3000/products');
+      const res = await axios.get(`${process.env.VUE_APP_API_URL}/products`);
       const products = res.data.map(p => ({
         ...p,
         liked: false,
@@ -71,13 +71,13 @@ export default {
       }));
 
       if (currentUser) {
-        const likedRes = await axios.get(`http://localhost:3000/like?user_email=${currentUser.email}`);
+        const likedRes = await axios.get(`${process.env.VUE_APP_API_URL}/like?user_email=${currentUser.email}`);
         const likedIds = likedRes.data.map(l => l.product_id);
         products.forEach(p => p.liked = likedIds.includes(p.id));
       }
 
       const countPromises = products.map(p =>
-        axios.get(`http://localhost:3000/likes/${p.id}`)
+        axios.get(`${process.env.VUE_APP_API_URL}/likes/${p.id}`)
       );//좋아요 수 불러옴
 
       const counts = await Promise.allSettled(countPromises);
@@ -107,7 +107,7 @@ export default {
         return;
       }
       try {
-        const response = await axios.get("http://localhost:3000/products/search", {
+        const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/search`, {
           params: { query: this.searchKeyword.trim() },
         });
         this.products = response.data.map(p => ({
@@ -124,7 +124,7 @@ export default {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) return;
 
-      axios.post('http://localhost:3000/likes', {
+      axios.post(`${process.env.VUE_APP_API_URL}/likes`, {
         product_id: product.id,
         user_email: user.email,
       }).then(res => {

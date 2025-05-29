@@ -46,7 +46,7 @@ export default {
   async mounted() {
     const id = this.$route.params.id;// URL에서 상품 ID 가져오기
     try {
-      const res = await axios.get(`http://localhost:3000/products/${id}`);// 상품 ID로 상품 정보 요청
+      const res = await axios.get(`${process.env.VUE_APP_API_URL}/products/${id}`);// 상품 ID로 상품 정보 요청
       this.product = res.data;
     } catch (err) {
       this.error = '상품 정보를 불러오지 못했습니다.';
