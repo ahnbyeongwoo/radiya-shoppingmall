@@ -1,21 +1,14 @@
-<template>
+<template><!--카트 페이지-->
   <div class="container py-4">
-    <router-link
-      to="/"
-      class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary"
-      style="height: 60px;"
-    >
-      <img
-        src="@/assets/wix.png"
-        alt="Logo"
-        class="logo me-2 logo-hover"
-      />
+    <router-link to="/" class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary" style="height: 60px;">
+      <img src="@/assets/wix.png" alt="Logo" class="logo me-2 logo-hover" />
     </router-link>
     <h2 class="fw-bold mt-2">장바구니</h2>
-
     <div v-if="cartItems.length === 0" class="mt-4 fs-5 text-muted">장바구니가 비었습니다.</div>
+
     <ul v-else class="list-group mt-4">
-      <li v-for="(item, index) in cartItems" :key="index" class="list-group-item d-flex align-items-center justify-content-between flex-wrap"><!-- 장바구니에 담긴 각 아이템을 반복 출력 -->
+      <li v-for="(item, index) in cartItems" :key="index" 
+      class="list-group-item d-flex align-items-center justify-content-between flex-wrap"><!-- 장바구니에 담긴 각 아이템을 반복 출력 -->
         <div class="d-flex align-items-center gap-4"><!-- 상품 이미지와 정보 -->
           <img :src="item.image" alt="item.name" width="100" class="img-thumbnail" />
           <div>
@@ -47,10 +40,10 @@ export default {
     };
   },
   computed: {
-    totalPrice() {
+    totalPrice() {//총 금액
       return this.cartItems.reduce((total, item) => total + item.price, 0);
     },
-    totalcount() {
+    totalcount() {//총 상품 개수
       return this.cartItems.length;//상품 개수 배열로 카운트하여 계산
     }
   },
@@ -83,10 +76,9 @@ img {
   height: 100px;
   object-fit: contain;
   display: block;
-  margin-top: 12px; /* 살짝 밑으로 */
-  transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s, filter 0.3s;
+  margin-top: 12px; /* 로고 이미지 스타일 */
 }
-.img-thumbnail {/* 장바구니 안의 상품 이미지 썸네일 스타일 */
+.img-thumbnail {/* 장바구니 안의 상품 이미지 */
   width: 90px;
   height: 90px;
   object-fit: contain;

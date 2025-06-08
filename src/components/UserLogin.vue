@@ -1,4 +1,4 @@
-<template>
+<template><!--로그인 페이지-->
   <div class="container d-flex align-items-center justify-content-center min-vh-100">
     <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
       <router-link to="/" class="text-decoration-none text-primary fs-3 fw-bold text-center mb-3 d-block">

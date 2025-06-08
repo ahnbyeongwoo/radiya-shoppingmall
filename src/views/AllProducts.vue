@@ -1,5 +1,5 @@
-<template>
-  <div class="container">
+<template><!--상품 전체 페이지-->
+  <div class="container"><!--views폴더와 컴포넌트의 상품 조회 리스트들은 ProductList.vue로 전달-->
     <router-link
       to="/"
       class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary"
@@ -20,7 +20,7 @@
             <i class="bi bi-search"></i>
           </button>
         </div>
-
+    <!--상품 목록 그리드-->
     <div class="row g-4 p-3">
       <div class="col-6 col-md-4 col-lg-3" v-for="(product, index) in products" :key="index">
         <div class="card h-100 shadow-sm">
@@ -64,18 +64,19 @@ export default {
 
     try {// 전체 상품 목록 불러옴
       const res = await axios.get(`${process.env.VUE_APP_API_URL}/products`);
+      //상품 객체에 liked와 likesCount 속성 추가
       const products = res.data.map(p => ({
         ...p,
         liked: false,
         likesCount: 0,
       }));
-
+      //로그인 했으면 좋아요 상품 체크
       if (currentUser) {
         const likedRes = await axios.get(`${process.env.VUE_APP_API_URL}/like?user_email=${currentUser.email}`);
         const likedIds = likedRes.data.map(l => l.product_id);
         products.forEach(p => p.liked = likedIds.includes(p.id));
       }
-
+      //모든 상품의 좋아요 개수 불러옴
       const countPromises = products.map(p =>
         axios.get(`${process.env.VUE_APP_API_URL}/likes/${p.id}`)
       );//좋아요 수 불러옴
@@ -85,7 +86,7 @@ export default {
         products[i].likesCount = res.status === 'fulfilled' ? res.value.data.likesCount : 0;
       });
 
-      this.products = products;
+      this.products = products;//최종적으로 products에 반영함
     } catch (err) {
       console.error('전체 상품 불러오기 실패:', err);
     }

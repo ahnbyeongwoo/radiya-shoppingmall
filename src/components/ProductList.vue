@@ -1,15 +1,14 @@
-<!--상품 리스트 페이지-->
-<!--전체 상품 보기 전용 페이지, 목록만 담당하는 컴포넌트 역할-->
-<!--views폴더와 컴포넌트의 상품 조회 리스트들은 ProductList.vue로 전달-->
-<template>
-  <div class="row g-4 px-3"><!--row 줄, col 각각의 칸-->
+<template><!--상품 리스트 페이지, 전체 상품 전용-->
+  <div class="row g-4 px-3"><!--부트스트랩 row 줄, col 각각의 칸-->
     <div v-for="product in localProducts" :key="product.id" class="col-6 col-md-4 col-lg-3">
       <div class="card h-100 shadow-sm">
         <img :src="product.image" class="card-img-top p-3" :alt="product.name" style="height: 200px; object-fit: contain;">
-        <div class="card-body d-flex flex-column"><!--카드 내부 정보-->
+        <!--카드 내부 정보-->
+        <div class="card-body d-flex flex-column">
           <h5 class="card-title ">{{ product.name }}</h5>
           <p class="text-primary fw-bold mb-2">{{ formatPrice(product.price).toLocaleString() }}원</p>
-          <div class="mt-auto d-flex justify-content-between"><!--하단 카드 버튼-->
+          <!--하단 카드 버튼-->
+          <div class="mt-auto d-flex justify-content-between">
             <button class="btn btn-sm btn-outline-secondary me-1" @click="goToDetail(product.id)">
                 🔍
               </button>
@@ -48,8 +47,8 @@ export default {
       const won = dollar * 1300;
       return `${won.toLocaleString()}`;
     },
-    addToCart(product) {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    addToCart(product) {//장바구니 로컬스토리지에 상품 추가
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');//
       cart.push(product);
       localStorage.setItem('cart', JSON.stringify(cart));
       alert('장바구니에 추가되었습니다!');

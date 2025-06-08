@@ -137,7 +137,7 @@ export default {
   height: 100px;
   object-fit: contain;
   display: block;
-  margin-top: 12px; /* 살짝 밑으로 */
+  margin-top: 12px;
   transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s, filter 0.3s;
 }
 </style>

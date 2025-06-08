@@ -1,4 +1,4 @@
-<template>
+<template><!--상품 상세 페이지-->
   <div class="container py-4">
  <router-link
       to="/"
@@ -13,7 +13,7 @@
     </router-link>
   </div>
  
-  <div v-if="product" class="container py-4 d-flex justify-content-center">
+  <div v-if="product" class="container py-4 d-flex justify-content-center"><!--상품 정보가 있을때만 카드로 표시-->
     <div class="card p-4 shadow mt-4" style="max-width: 400px; width: 100%;"><!--상품 카드-->
       <img :src="product.image" :alt="product.name" class="card-img-top mb-4" style="max-height: 400px; object-fit: contain;" />
 
@@ -47,7 +47,7 @@ export default {
     const id = this.$route.params.id;// URL에서 상품 ID 가져오기
     try {
       const res = await axios.get(`${process.env.VUE_APP_API_URL}/products/${id}`);// 상품 ID로 상품 정보 요청
-      this.product = res.data;
+      this.product = res.data;//성공하면 product에 저장
     } catch (err) {
       this.error = '상품 정보를 불러오지 못했습니다.';
       console.error('상품 불러오기 실패:', err);

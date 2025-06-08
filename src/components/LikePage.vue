@@ -1,17 +1,9 @@
-<template>
+<template><!--좋아요 페이지-->
   <div class="container py-4">
-    <router-link
-      to="/"
-      class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary"
-      style="height: 60px;"
-    >
-      <img
-        src="@/assets/wix.png"
-        alt="Logo"
-        class="logo me-2 logo-hover"
-      />
+    <router-link to="/" class="d-flex align-items-center gap-2 mb-3 text-decoration-none fs-3 fw-bold text-primary" style="height: 60px;" >
+      <img src="@/assets/wix.png" alt="Logo" class="logo me-2 logo-hover" />
     </router-link>
-    <h2 class="fw-bold mt-2 ">관심상품</h2>
+    <h2 class="fw-bold mt-2 ">관심상품</h2><!--페이지 상단 제목-->
     <ul v-if="likedProducts.length > 0" class="list-group mt-4">
       <li v-for="(item, index) in likedProducts" :key="index" 
       class="list-group-item d-flex align-items-center justify-content-between flex-wrap"> <!-- 좋아요한 각 상품 반복 렌더링 -->
@@ -50,7 +42,7 @@ export default {
       return this.$router.push("/login");
     }
 
-    try {// 좋아요한 상품 목록 조회
+    try {// 좋아요한 상품 목록 id 조회
       const res = await axios.get(`${process.env.VUE_APP_API_URL}/like?user_email=${this.currentUser.email}`);
       const likedIds = res.data.map((item) => item.product_id);// 좋아요한 상품 ID 배열 추출
 
@@ -60,7 +52,9 @@ export default {
       const productRes = await axios.get(`${process.env.VUE_APP_API_URL}/products`);
       const allProducts = productRes.data;
 
-      this.likedProducts = allProducts.filter((p) => likedIds.includes(p.id));// 좋아요한 상품 ID로 필터링
+      // 좋아요한 상품만 필터링하여 likedProducts에 저장
+      this.likedProducts = allProducts.filter((p) => likedIds.includes(p.id));
+      
     } catch (err) {
       console.error("좋아요 상품 조회 실패:", err);
     }

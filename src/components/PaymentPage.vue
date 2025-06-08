@@ -1,4 +1,4 @@
-<template>
+<template><!--결제 페이지-->
   <div class="container mt-5"><!--상단 마진-->
     <div class="row justify-content-center">
       <div class="col-md-8"><!-- 카드 스타일 박스와 그림자 -->

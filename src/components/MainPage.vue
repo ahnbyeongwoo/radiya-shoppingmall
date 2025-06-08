@@ -1,10 +1,8 @@
-<template>
-  <div class="container-fluid px-5">
-    <!-- 최상단 타이틀 및 우측 버튼 -->
+<template><!--메인 페이지-->
+  <div class="container-fluid px-5"><!-- 최상단 타이틀 및 우측 버튼 -->
     <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
       <h1 class="fw-bold fs-3 text-primary d-flex align-items-center mb-0">
         <img src="@/assets/wix.png" alt="Logo" class="logo me-2" />
-        <!-- RADIYA -->
       </h1>
       <div class="category-nav d-flex justify-content-center gap-4 my-4"><!--검색, 장바구니, 좋아요 영역-->
         <!-- 검색창 -->
@@ -15,7 +13,6 @@
             <i class="bi bi-search"></i>
           </button>
         </div>
-
         <button @click="goToCart" class="btn btn-outline-dark">🛒</button>
         <button @click="goToLike" class="btn btn-outline-danger">❤️</button>
       </div>
@@ -28,7 +25,7 @@
       <button v-if="!isLoggedIn" class="btn btn-outline-secondary btn-sm" @click="goToSignup">회원가입</button>
     </div>
 
-    <!-- 카테고리 -->
+    <!-- 카테고리별 -->
     <div class="d-flex gap-4 mb-4">
       <button class="category-btn" @click="goToCategory('/men')">mens</button>
       <button class="category-btn" @click="goToCategory('/women')">womens</button>
@@ -93,7 +90,7 @@ export default {
         const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/search`, {
           params: { query: this.searchKeyword.trim() },
         });
-        this.products = response.data.map(p => ({// // 검색 결과에 좋아요 관련 필드 기본값 추가
+        this.products = response.data.map(p => ({// 검색 결과에 좋아요 관련 필드 기본값 추가
           ...p,
           liked: false,
           likesCount: 0
@@ -114,7 +111,7 @@ export default {
       this.isLoggedIn = !!(currentUser && currentUser.email);//새로고침해도 로그인 상태 유지
 
       const productRes = await axios.get(`${process.env.VUE_APP_API_URL}/products`);// 전체 상품 조회
-      const productList = productRes.data;
+      const productList = productRes.data;// productlist는 상품 데이터 배열
 
 
       if (currentUser && currentUser.email) {// 로그인한 경우 -> 좋아요 정보 요청
@@ -137,7 +134,7 @@ export default {
       );
 
       const likeCounts = await Promise.allSettled(countPromises);// 모든 좋아요 개수 요청 처리
-      likeCounts.forEach((res, idx) => {
+      likeCounts.forEach((res, idx) => {//결과는 productlist에 저장
         if (res.status === "fulfilled") {
           productList[idx].likesCount = res.value.data.likesCount || 0;
         } else {
@@ -158,22 +155,22 @@ export default {
 .logo {
   width: 100px;
   height: 100px;
-  object-fit: contain;
-  display: inline-block;
+  object-fit: contain;  /*로고 비율 유지 */
+  display: inline-block;  /*로고 중앙 정렬 */
 }
 
-.category-bar {
-  justify-content: center;
+.category-bar { 
+  justify-content: center;  
 }
 
 .category-btn {
-  border: none;
-  background: transparent;
-  font-size: 1.1rem;
+  border: none;/*버튼 테두리 제거 */
+  background: transparent;  
+  font-size: 1.1rem;  
   color: #222;
-  font-weight: 500;
-  padding: 8px 18px;
-  border-radius: 20px;
+  font-weight: 500; 
+  padding: 8px 18px;  
+  border-radius: 20px; /*모서리 둥글게 */
   /* transition: color 0.2s, background 0.2s; */
   cursor: pointer;
 }
