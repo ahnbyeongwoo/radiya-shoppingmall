@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     onImageError(event){
-      event.target.src=require('@/assets/no-image.png');//이미지 로드 실패시 대체 이미지
+      event.target.src=require('/images/no-image.png');//이미지 로드 실패시 대체 이미지
     },
     formatPrice(dollar) {
       const won = dollar * 1300;
