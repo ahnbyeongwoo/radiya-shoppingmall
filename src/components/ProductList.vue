@@ -2,13 +2,7 @@
   <div class="row g-4 px-3"><!--부트스트랩 row 줄, col 각각의 칸-->
     <div v-for="product in localProducts" :key="product.id" class="col-6 col-md-4 col-lg-3">
       <div class="card h-100 shadow-sm">
-        <img :src="product.image" 
-        class="card-img-top p-3" 
-        :alt="product.name" 
-        style="height: 200px; object-fit: contain;"
-        referrerpolicy="no-referrer"
-        @error="onImageError($event)"
-        >
+        <img :src="product.image" class="card-img-top p-3" :alt="product.name" style="height: 200px; object-fit: contain;">
         <!--카드 내부 정보-->
         <div class="card-body d-flex flex-column">
           <h5 class="card-title ">{{ product.name }}</h5>
@@ -49,9 +43,6 @@ export default {
     };
   },
   methods: {
-    onImageError(event){
-      event.target.src=require('/images/no-image.png');//이미지 로드 실패시 대체 이미지
-    },
     formatPrice(dollar) {
       const won = dollar * 1300;
       return `${won.toLocaleString()}`;
