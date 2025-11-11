@@ -36,6 +36,7 @@ npm run serve
 # 빌드
 npm run build
 
+```
 
 ---
 📁 폴더 구조
@@ -43,18 +44,18 @@ npm run build
 radiya-shoppingmall/
 ├── src/
 │ ├── components/
-│ │ ├── MainPage.vue
-│ │ ├── ProductList.vue
-│ │ ├── ProductDetail.vue
-│ │ ├── CartPage.vue
-│ │ ├── LikePage.vue
-│ │ ├── UserLogin.vue
-│ │ ├── SignUp.vue
-│ │ └── PaymentPage.vue
+│ │ ├── MainPage.vue #메인페이지 
+│ │ ├── ProductList.vue #상품리스트
+│ │ ├── ProductDetail.vue #상품 상세 페이지
+│ │ ├── CartPage.vue #장바구니 페이지
+│ │ ├── LikePage.vue #좋아요 페이지
+│ │ ├── UserLogin.vue #로그인 페이지
+│ │ ├── SignUp.vue #회원가입 페이지
+│ │ └── PaymentPage.vue #결제 페이지
 │ ├── router/
 │ │ └── index.js
 │ ├── views/
-│ │ ├── MenPage.vue
+│ │ ├── MenPage.vue #카테고리별 페이지
 │ │ ├── WomenPage.vue
 │ │ ├── JewelryPage.vue
 │ │ └── ElectronicsPage.vue
