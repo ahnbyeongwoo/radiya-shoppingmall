@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # 🛍️ Radiya Shopping Mall
 
 Vue.js 기반 쇼핑몰 웹사이트입니다.  
@@ -89,5 +89,3 @@ this.localProducts = [...newVal];
 =======
 # Radiya Shopping Mall
 
-README 정리 예정.
->>>>>>> d76b197ddc05adaf413e3236c14a85920611aee9
