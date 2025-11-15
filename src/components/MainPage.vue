@@ -23,6 +23,7 @@
       <button v-if="!isLoggedIn" class="btn btn-outline-primary btn-sm" @click="goToLogin">로그인</button>
       <button v-else class="btn btn-outline-secondary btn-sm" @click="logout">로그아웃</button>
       <button v-if="!isLoggedIn" class="btn btn-outline-secondary btn-sm" @click="goToSignup">회원가입</button>
+      
     </div>
 
     <!-- 카테고리별 -->
