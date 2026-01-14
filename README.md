@@ -1,5 +1,5 @@
 
-# 🛍️ Radiya Shopping Mall
+# Radiya Shopping Mall
 
 Vue.js 기반 쇼핑몰 웹사이트입니다.  
 상품 목록, 카테고리 필터, 장바구니, 좋아요, 상세 페이지 등 전자상거래 핵심 기능을 구현했습니다.  
@@ -7,7 +7,7 @@ Vue.js 기반 쇼핑몰 웹사이트입니다.
 
 ---
 
-## 🧩 기술 스택
+## 기술 스택
 
 **Frontend:** Vue.js, Vue Router, Axios, Bootstrap  
 **Backend:** Node.js, Express  
@@ -17,7 +17,7 @@ Vue.js 기반 쇼핑몰 웹사이트입니다.
 
 ---
 
-## 📦 주요 기능
+## 주요 기능
 
 1. 상품 목록 조회  
 2. 카테고리별 필터  
@@ -28,7 +28,7 @@ Vue.js 기반 쇼핑몰 웹사이트입니다.
 
 ---
 
-## 🚀 실행 방법
+## 실행 방법
 
 ```bash
 npm install
@@ -39,7 +39,7 @@ npm run build
 ```
 
 ---
-📁 폴더 구조
+폴더 구조
 ```
 radiya-shoppingmall/
 ├── src/
